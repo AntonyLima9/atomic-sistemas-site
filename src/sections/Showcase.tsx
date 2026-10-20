@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { ScrollTrigger } from '../lib/scroll'
 import { scrollState, seg } from '../lib/store'
+import { lowPower } from '../lib/env'
 import { useMockImages } from '../lib/useMockImages'
 import { IconBag, IconBolt, IconDevices, IconTile } from '../components/Icons'
 
@@ -31,7 +32,7 @@ export function Showcase({ enabled3d }: { enabled3d: boolean }) {
         const t = Math.min(seg(p, a - fade, a), 1 - seg(p, b - fade, b))
         el.style.opacity = String(t)
         el.style.transform = `translate3d(0, ${(1 - t) * 30}px, 0)`
-        el.style.filter = `blur(${(1 - t) * 8}px)`
+        if (!lowPower) el.style.filter = `blur(${(1 - t) * 8}px)`
         el.style.visibility = t <= 0.01 ? 'hidden' : 'visible'
       })
     }

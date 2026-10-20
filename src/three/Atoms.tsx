@@ -28,6 +28,7 @@ export function Atoms({ count = 60 }: { count?: number }) {
   const q = useMemo(() => new THREE.Quaternion(), [])
   const v = useMemo(() => new THREE.Vector3(), [])
   const s = useMemo(() => new THREE.Vector3(), [])
+  const tmp = useMemo(() => new THREE.Vector3(), [])
 
   useLayoutEffect(() => {
     nuclei.current!.instanceMatrix.setUsage(THREE.DynamicDrawUsage)
@@ -44,8 +45,8 @@ export function Atoms({ count = 60 }: { count?: number }) {
       nuclei.current!.setMatrixAt(i, m)
       for (let k = 0; k < 2; k++) {
         const a = t * d.speed + d.phase + k * Math.PI
-        const local = new THREE.Vector3(Math.cos(a) * d.radius * d.size, Math.sin(a) * d.radius * d.size, 0).applyEuler(d.tilt)
-        m.compose(local.add(v), q, s.setScalar(d.size * 0.9))
+        tmp.set(Math.cos(a) * d.radius * d.size, Math.sin(a) * d.radius * d.size, 0).applyEuler(d.tilt).add(v)
+        m.compose(tmp, q, s.setScalar(d.size * 0.9))
         electrons.current!.setMatrixAt(i * 2 + k, m)
       }
     })

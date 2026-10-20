@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { planeFromShape, roundedRectShape } from './textures'
 import { deviceMaterials } from './materials'
 import { logoShapes } from './logoShapes'
+import { lowPower } from '../lib/env'
 
 export const PHONE = { w: 0.92, h: 1.9, r: 0.15, depth: 0.05 }
 const BEVEL = 0.018
@@ -56,9 +57,11 @@ export const Iphone = forwardRef<THREE.Group, { screen: THREE.Texture | null; sc
         <mesh geometry={geo.island} position={[0, PHONE.h / 2 - 0.085, FRONT + 0.0018]}>
           <meshBasicMaterial color="#000" />
         </mesh>
-        <mesh geometry={geo.glass} position={[0, 0, FRONT + 0.0024]}>
-          <meshPhysicalMaterial transparent opacity={0.08} roughness={0.03} metalness={1} depthWrite={false} />
-        </mesh>
+        {!lowPower && (
+          <mesh geometry={geo.glass} position={[0, 0, FRONT + 0.0024]}>
+            <meshPhysicalMaterial transparent opacity={0.08} roughness={0.03} metalness={1} depthWrite={false} />
+          </mesh>
+        )}
 
         {/* botões em titânio */}
         {[

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { IconChat } from './Icons'
 import { linkWhatsApp } from '../data/contato'
 import { scrollState } from '../lib/store'
+import { isTouch } from '../lib/env'
 
 // Barra de progresso no topo + grain + botão flutuante de WhatsApp.
 export function Progress() {
@@ -53,6 +54,7 @@ export function WhatsAppFloat() {
 export function Marquee({ items = ['SITES', 'PAINÉIS', 'APLICATIVOS', 'RÁPIDO', 'BONITO', 'ACESSÍVEL'] }: { items?: string[] }) {
   const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
+    if (isTouch) return
     let raf = 0
     const loop = () => {
       const v = Math.max(-12, Math.min(12, scrollState.velocity * 0.35))

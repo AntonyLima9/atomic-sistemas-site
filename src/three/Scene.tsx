@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { ContactShadows, Environment, Lightformer, PerformanceMonitor } from '@react-three/drei'
 import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
@@ -9,6 +9,7 @@ import { Atoms } from './Atoms'
 import { LogoAssembly } from './LogoAssembly'
 import { setScroll, useScreenTextures } from './textures'
 import { easeInOut, easeOut, lerp, scrollState, seg } from '../lib/store'
+import { lowPower } from '../lib/env'
 
 const TAU = Math.PI * 2
 const LID_OPEN = -1.83 // ~105°
@@ -129,7 +130,7 @@ function CameraRig({ mobile }: { mobile: boolean }) {
   return null
 }
 
-function Lights() {
+function Lights({ low }: { low: boolean }) {
   return (
     <>
       <ambientLight intensity={0.2} />
@@ -137,7 +138,7 @@ function Lights() {
       {/* contorno: branco frio de um lado, dourado da marca do outro (atrás, só pega a silhueta) */}
       <spotLight position={[-4.5, -0.2, -5]} angle={0.45} penumbra={1} intensity={10} color="#E2B82C" distance={12} />
       <spotLight position={[5, 0.4, -5]} angle={0.45} penumbra={1} intensity={8} color="#dfe6ff" distance={12} />
-      <Environment resolution={512} frames={1}>
+      <Environment resolution={low ? 128 : 512} frames={1}>
         {/* estúdio de fotografia de produto: softbox grande em cima + réguas de luz que desenham
             os filetes de brilho nas bordas do alumínio e do titânio */}
         <color attach="background" args={['#0b0b0c']} />
@@ -152,18 +153,47 @@ function Lights() {
   )
 }
 
+// Decide quando desenhar: pausa quando a cena está escondida atrás de uma seção sólida
+// (preços, rodapé) e, no celular, desenha o fundo a 30 fps fora dos momentos principais.
+function FrameDriver({ low }: { low: boolean }) {
+  const invalidate = useThree((s) => s.invalidate)
+  useEffect(() => {
+    let raf = 0
+    let n = 0
+    const solid = Array.from(document.querySelectorAll<HTMLElement>('#precos, footer'))
+    const covered = () =>
+      solid.some((el) => {
+        const r = el.getBoundingClientRect()
+        return r.top <= 0 && r.bottom >= innerHeight
+      })
+    const loop = () => {
+      raf = requestAnimationFrame(loop)
+      if (document.hidden || covered()) return
+      const s = scrollState
+      const main = (s.show > 0 && s.show < 1) || s.hero < 1 || s.cta > 0
+      n++
+      if (!low || main || n % 2 === 0) invalidate()
+    }
+    raf = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(raf)
+  }, [invalidate, low])
+  return null
+}
+
 export default function Scene() {
   const mobile = window.innerWidth < 768
-  const [fx, setFx] = useState(!mobile)
-  const [dpr, setDpr] = useState(mobile ? 1.5 : 2)
+  const low = lowPower
+  const [fx, setFx] = useState(!low)
+  const [dpr, setDpr] = useState(low ? 1.25 : 2)
 
   return (
     <Canvas
       className="!fixed inset-0"
       style={{ position: 'fixed', inset: 0, zIndex: 0 }}
       dpr={[1, dpr]}
+      frameloop="demand"
       camera={{ fov: 35, position: [0, 1.2, 9], near: 0.1, far: 80 }}
-      gl={{ antialias: true, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping }}
+      gl={{ antialias: !low, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping }}
       aria-hidden
     >
       <PerformanceMonitor
@@ -172,19 +202,20 @@ export default function Scene() {
           setDpr(1)
         }}
       />
+      <FrameDriver low={low} />
       <color attach="background" args={['#070707']} />
       <fog attach="fog" args={['#070707', 12, 34]} />
-      <Lights />
+      <Lights low={low} />
       <CameraRig mobile={mobile} />
       <Devices mobile={mobile} />
       <LogoAssembly mobile={mobile} />
-      <Atoms count={mobile ? 22 : 60} />
+      <Atoms count={low ? 18 : 60} />
       {/* piso quadriculado: linhas opacas (somem na névoa), assim os aparelhos sempre ficam na frente */}
       <group position={[0, -2.7, 0]}>
         <gridHelper args={[80, 134, '#1b1b1b', '#1b1b1b']} />
         <gridHelper args={[80, 27, '#3d3210', '#3d3210']} position={[0, 0.002, 0]} />
       </group>
-      {!mobile && <ContactShadows position={[0, -2.68, 0]} opacity={0.55} scale={14} blur={2.6} far={4} resolution={512} color="#000" />}
+      {!low && <ContactShadows position={[0, -2.68, 0]} opacity={0.55} scale={14} blur={2.6} far={4} resolution={512} color="#000" />}
       {fx && (
         <EffectComposer multisampling={0}>
           <Bloom mipmapBlur luminanceThreshold={0.95} luminanceSmoothing={0.2} intensity={0.9} />

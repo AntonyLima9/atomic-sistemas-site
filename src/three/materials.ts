@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { lowPower } from '../lib/env'
 
 // Texturas procedurais (canvas) para os acabamentos reais dos aparelhos:
 // alumínio jateado do MacBook, titânio escovado e vidro fosco do iPhone.
@@ -71,7 +72,24 @@ function brushed(size: number, lo: number, hi: number, repeat: number) {
 }
 
 let cache: ReturnType<typeof build> | null = null
-export const deviceMaterials = () => (cache ??= build())
+export const deviceMaterials = () => (cache ??= lowPower ? buildLite() : build())
+
+// Versão para celular: mesmos tons e brilhos, mas só MeshStandardMaterial (bem mais barato na GPU).
+function buildLite() {
+  const std = (o: THREE.MeshStandardMaterialParameters) => new THREE.MeshStandardMaterial(o)
+  const alRough = grain(256, 0.3, 0.46, 0.6, 6)
+  return {
+    aluminum: std({ color: '#5c5f66', metalness: 1, roughness: 1, roughnessMap: alRough, envMapIntensity: 1.35 }),
+    aluminumEdge: std({ color: '#6a6d74', metalness: 1, roughness: 0.2, envMapIntensity: 1.6 }),
+    keycap: std({ color: '#0c0c0e', roughness: 0.55, metalness: 0 }),
+    titanium: std({ color: '#46464a', metalness: 1, roughness: 0.32, envMapIntensity: 1.5 }),
+    backGlass: std({ color: '#232428', metalness: 0, roughness: 0.5 }),
+    glossGlass: std({ color: '#1d1e22', metalness: 0.3, roughness: 0.1 }),
+    lensRing: std({ color: '#55565b', metalness: 1, roughness: 0.18 }),
+    lens: std({ color: '#0a0a14', metalness: 0.6, roughness: 0.05 }),
+    blackGlass: std({ color: '#020203', roughness: 0.08, metalness: 0.2 }),
+  } as unknown as ReturnType<typeof build>
+}
 
 function build() {
   const alRough = grain(512, 0.3, 0.46, 0.6, 6)
@@ -131,4 +149,11 @@ function build() {
     }),
     blackGlass: new THREE.MeshPhysicalMaterial({ color: '#020203', roughness: 0.06, metalness: 0.1, clearcoat: 1 }),
   }
+}
+
+// Material "físico" no desktop; no celular vira MeshStandard (sem clearcoat, mais barato).
+export function phys(params: THREE.MeshPhysicalMaterialParameters) {
+  if (!lowPower) return new THREE.MeshPhysicalMaterial(params)
+  const { clearcoat: _c, clearcoatRoughness: _cr, iridescence: _i, iridescenceIOR: _ii, iridescenceThicknessRange: _it, anisotropy: _a, transmission: _t, ...rest } = params
+  return new THREE.MeshStandardMaterial(rest as THREE.MeshStandardMaterialParameters)
 }
