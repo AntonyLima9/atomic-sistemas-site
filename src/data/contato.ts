@@ -4,6 +4,12 @@ export const contato = {
   whatsappExibicao: '(33) 99821-0281',
   instagram: 'atomic.sistemas',
   mensagemPadrao: 'Olá! Vim pelo site da Atomic e quero um orçamento.',
+  // Identificação exigida para quem oferta serviços online (Decreto 7.962/2013).
+  // Preencha com a razão social e o CNPJ (ou nome completo e CPF) e a cidade/UF.
+  razaoSocial: 'Atomic Sistemas',
+  documentoTipo: 'CNPJ' as 'CNPJ' | 'CPF',
+  documento: '',
+  cidade: '',
 }
 
 export const linkWhatsApp = (mensagem: string = contato.mensagemPadrao) =>

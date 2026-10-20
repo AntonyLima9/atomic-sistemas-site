@@ -11,7 +11,7 @@ const overlays = [
   { range: [0.5, 0.64], label: '// MOBILE', title: 'Perfeito no celular também.', text: 'A maioria dos seus clientes chega pelo celular. O site é feito pensando nele.' },
 ]
 const cards = [
-  { icon: IconBolt, title: 'Carrega em < 2s', text: 'Hospedagem global do Google.' },
+  { icon: IconBolt, title: 'Carregamento rápido', text: 'Hospedado na rede global do Google.' },
   { icon: IconDevices, title: '100% responsivo', text: 'Do celular à TV da recepção.' },
   { icon: IconBag, title: 'Pronto para vender', text: 'Pedidos direto no seu WhatsApp.' },
 ]
@@ -60,7 +60,7 @@ export function Showcase({ enabled3d }: { enabled3d: boolean }) {
   if (!enabled3d) return <StaticShowcase />
 
   return (
-    <section id="showcase" ref={root} className="relative h-[420vh] md:h-[520vh]" aria-label="Demonstração: MacBook e iPhone com sites feitos pela Atomic">
+    <section id="showcase" ref={root} className="relative h-[420vh] md:h-[520vh]" aria-label="Demonstração: notebook e celular com sites de exemplo">
       <div ref={layer} className="sticky top-0 h-[100svh] overflow-hidden">
         {overlays.map((o, i) => (
           <div

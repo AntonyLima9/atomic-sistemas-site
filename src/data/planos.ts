@@ -43,7 +43,8 @@ export const planos: Plano[] = [
       'Layout responsivo para celular e computador',
       'Formulário de contato integrado ao WhatsApp',
       'SEO on-page básico em todas as páginas',
-      'Google Analytics configurado',
+      'Google Analytics com aviso de cookies',
+      'Política de privacidade (LGPD)',
       '2 rodadas de ajustes',
       'Publicação com SSL e ajuda para conectar seu domínio',
     ],
@@ -66,7 +67,7 @@ export const planos: Plano[] = [
 ]
 
 export const custosNoAr = [
-  { item: 'Hospedagem (Firebase)', valor: 'R$ 0', obs: 'O plano gratuito atende a maioria dos sites.' },
+  { item: 'Hospedagem (Firebase)', valor: 'R$ 0', obs: 'No plano gratuito do Google, dentro dos limites de uso. Atende a maioria dos sites institucionais.' },
   { item: 'Domínio .com.br', valor: '~R$ 40/ano', obs: 'Pago direto no Registro.br, no nome do cliente.' },
   { item: 'Painéis e apps com banco de dados', valor: 'sob uso', obs: 'Pode ter um custo mensal pequeno. Explicamos antes de começar.' },
 ]

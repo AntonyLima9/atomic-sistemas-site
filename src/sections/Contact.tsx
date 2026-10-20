@@ -94,6 +94,10 @@ export function Contact() {
             Enviar no WhatsApp <IconArrow className="arrow h-4 w-4" />
           </button>
         </form>
+        <p className="mt-4 text-center text-xs text-white/45">
+          O formulário só abre o seu WhatsApp com a mensagem pronta; não guardamos os dados digitados.{' '}
+          <a href="/privacidade" className="underline underline-offset-4 hover:text-sun">Política de Privacidade</a>
+        </p>
       </div>
     </section>
   )
