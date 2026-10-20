@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { SplitText } from '../components/SplitText'
 import { Magnetic } from '../components/Magnetic'
-import { IconArrow, IconCheck } from '../components/Icons'
+import { IconArrow, IconCard, IconCheck, IconStar } from '../components/Icons'
 import { custosNoAr, planos } from '../data/planos'
 import { linkWhatsApp } from '../data/contato'
 
@@ -49,7 +49,7 @@ export function Pricing() {
               style={{ ['--d' as string]: `${i * 120}ms` }}
               className={`relative flex flex-col rounded-[28px] p-8 ${p.destaque ? 'border-spin bg-ink text-paper shadow-[0_40px_80px_-30px_rgba(0,0,0,.6)] lg:-my-4 lg:py-12' : 'border border-black/10 bg-white/60'}`}
             >
-              {p.destaque && <span className="absolute -top-3 left-8 rounded-full bg-sun px-3 py-1 font-mono text-[11px] font-semibold text-ink">⭐ MAIS ESCOLHIDO</span>}
+              {p.destaque && <span className="absolute -top-3 left-8 flex items-center gap-1.5 rounded-full bg-sun px-3 py-1 font-mono text-[11px] font-semibold text-ink"><IconStar className="h-3 w-3" /> MAIS ESCOLHIDO</span>}
               <p className={`font-mono text-xs uppercase tracking-widest ${p.destaque ? 'text-gold' : 'text-[#8a6d0f]'}`}>{p.subtitulo}</p>
               <h3 className="h-display mt-2 text-4xl">{p.nome}</h3>
               <p className={`mt-2 text-sm ${p.destaque ? 'text-white/60' : 'text-black/55'}`}>{p.paraQuem}</p>
@@ -106,7 +106,7 @@ export function Pricing() {
         </div>
 
         <div className="mt-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <p className="rounded-full border border-black/10 px-5 py-3 font-mono text-sm">💳 Pagamento: 50% para começar, 50% na entrega.</p>
+          <p className="flex items-center gap-2.5 rounded-full border border-black/10 px-5 py-3 font-mono text-sm"><IconCard className="h-5 w-5 text-[#8a6d0f]" /> Pagamento: 50% para começar, 50% na entrega.</p>
           <a href={linkWhatsApp('Olá! Quero um orçamento para um aplicativo/sistema maior.')} target="_blank" rel="noopener" className="group flex items-center gap-3 text-lg font-semibold" data-cursor="falar">
             Aplicativo ou sistema maior? <span className="underline decoration-gold decoration-2 underline-offset-4">Orçamento sob medida</span>
             <IconArrow className="h-5 w-5 transition-transform group-hover:translate-x-1" />

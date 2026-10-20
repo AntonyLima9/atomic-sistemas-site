@@ -121,16 +121,17 @@ function CameraRig({ mobile }: { mobile: boolean }) {
 function Lights() {
   return (
     <>
-      <ambientLight intensity={0.25} />
-      <directionalLight position={[3, 5, 6]} intensity={1.6} />
-      {/* rim light dourada por trás */}
-      <spotLight position={[-2, 3.5, -5]} angle={0.7} penumbra={1} intensity={9} color="#E2B82C" distance={20} />
-      <spotLight position={[4, 2, -4]} angle={0.6} penumbra={1} intensity={4} color="#FFD23F" distance={18} />
+      <ambientLight intensity={0.2} />
+      <directionalLight position={[3, 6, 6]} intensity={1.4} />
+      {/* contorno: branco frio de um lado, dourado da marca do outro (atrás, só pega a silhueta) */}
+      <spotLight position={[-4.5, -0.2, -5]} angle={0.45} penumbra={1} intensity={10} color="#E2B82C" distance={12} />
+      <spotLight position={[5, 0.4, -5]} angle={0.45} penumbra={1} intensity={8} color="#dfe6ff" distance={12} />
       <Environment resolution={256} frames={1}>
-        <Lightformer form="rect" intensity={2.5} position={[0, 5, -2]} scale={[10, 2, 1]} rotation-x={Math.PI / 2} />
-        <Lightformer form="rect" intensity={1.2} position={[-5, 1, 1]} scale={[3, 8, 1]} rotation-y={Math.PI / 2} />
-        <Lightformer form="rect" intensity={1.2} position={[5, 1, 1]} scale={[3, 8, 1]} rotation-y={-Math.PI / 2} />
-        <Lightformer form="ring" color="#E2B82C" intensity={1.2} position={[0, 1, -6]} scale={3} />
+        {/* estúdio neutro: softboxes brancos, para o alumínio ficar cinza e não dourado */}
+        <Lightformer form="rect" intensity={2.2} position={[0, 6, 1]} scale={[12, 3, 1]} rotation-x={Math.PI / 2} />
+        <Lightformer form="rect" intensity={1.4} position={[-6, 2, 2]} scale={[3, 9, 1]} rotation-y={Math.PI / 2} />
+        <Lightformer form="rect" intensity={1.4} position={[6, 2, 2]} scale={[3, 9, 1]} rotation-y={-Math.PI / 2} />
+        <Lightformer form="rect" intensity={0.8} position={[0, 1, 8]} scale={[10, 2, 1]} />
       </Environment>
     </>
   )

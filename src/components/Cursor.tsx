@@ -66,7 +66,8 @@ export function Cursor() {
       const text = hit?.dataset.cursor ?? (hit ? (hit.tagName === 'A' ? 'abrir' : hit.matches('input,textarea,select') ? '' : 'ver') : zone?.dataset.cursorZone ?? '')
       const big = !!hit && !hit.matches('input,textarea,select')
       targetSize = big ? 84 : zone ? 64 : 34
-      ring.current!.classList.toggle('is-big', big || !!zone)
+      ring.current!.classList.toggle('is-big', big)
+      ring.current!.classList.toggle('is-zone', !big && !!zone)
       label.current!.textContent = text
     }
     const down = (e: PointerEvent) => {

@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { ScrollTrigger } from '../lib/scroll'
 import { scrollState, seg } from '../lib/store'
 import { useMockImages } from '../lib/useMockImages'
+import { IconBag, IconBolt, IconDevices, IconTile } from '../components/Icons'
 
 // Faixas de progresso [entra, sai] de cada texto sobreposto à cena 3D.
 const overlays = [
@@ -10,9 +11,9 @@ const overlays = [
   { range: [0.5, 0.64], label: '// MOBILE', title: 'Perfeito no celular também.', text: 'A maioria dos seus clientes chega pelo celular. O site é feito pensando nele.' },
 ]
 const cards = [
-  { icon: '⚡', title: 'Carrega em < 2s', text: 'Hospedagem global do Google.' },
-  { icon: '📱', title: '100% responsivo', text: 'Do celular à TV da recepção.' },
-  { icon: '💬', title: 'Pronto para vender', text: 'Pedidos direto no seu WhatsApp.' },
+  { icon: IconBolt, title: 'Carrega em < 2s', text: 'Hospedagem global do Google.' },
+  { icon: IconDevices, title: '100% responsivo', text: 'Do celular à TV da recepção.' },
+  { icon: IconBag, title: 'Pronto para vender', text: 'Pedidos direto no seu WhatsApp.' },
 ]
 
 export function Showcase({ enabled3d }: { enabled3d: boolean }) {
@@ -77,7 +78,7 @@ export function Showcase({ enabled3d }: { enabled3d: boolean }) {
           {cards.map((c, i) => (
             <div key={c.title} data-range={`${0.64 + i * 0.03},0.86`} className="glass glass-dark rounded-2xl p-3 md:p-5" style={{ opacity: 0 }}>
               <div className="flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-3">
-                <span className="grid h-9 w-9 place-items-center rounded-xl bg-sun/10 text-lg md:h-10 md:w-10 md:text-xl">{c.icon}</span>
+                <IconTile icon={c.icon} />
                 <div>
                   <p className="font-display text-sm font-semibold leading-tight md:text-lg">{c.title}</p>
                   <p className="hidden text-sm text-white/55 md:block">{c.text}</p>

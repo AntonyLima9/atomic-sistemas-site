@@ -1,7 +1,7 @@
 import { SplitText } from '../components/SplitText'
 import { Scramble } from '../components/Scramble'
 import { Magnetic } from '../components/Magnetic'
-import { IconArrow, IconDown } from '../components/Icons'
+import { IconArrow, IconBolt, IconDevices, IconDown, IconMessage } from '../components/Icons'
 import { linkWhatsApp } from '../data/contato'
 import { scrollTo } from '../lib/scroll'
 
@@ -31,9 +31,19 @@ export function Hero() {
           </div>
         </div>
         <ul data-reveal className="mt-10 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-white/55" style={{ ['--d' as string]: '800ms' }}>
-          <li>⚡ Entrega em até 7 dias</li>
-          <li>📱 Funciona em qualquer tela</li>
-          <li>💬 Suporte direto comigo</li>
+          {[
+            [IconBolt, 'Entrega em até 7 dias'],
+            [IconDevices, 'Funciona em qualquer tela'],
+            [IconMessage, 'Suporte direto comigo'],
+          ].map(([Icon, t]) => {
+            const I = Icon as typeof IconBolt
+            return (
+              <li key={t as string} className="flex items-center gap-2">
+                <I className="h-4 w-4 text-gold" />
+                {t as string}
+              </li>
+            )
+          })}
         </ul>
       </div>
       <div className="pointer-events-none absolute bottom-6 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 font-mono text-[10px] tracking-[0.3em] text-white/40">

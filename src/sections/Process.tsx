@@ -2,12 +2,13 @@ import { useEffect, useRef } from 'react'
 import { SplitText } from '../components/SplitText'
 import { Scramble } from '../components/Scramble'
 import { ScrollTrigger } from '../lib/scroll'
+import { IconCode, IconLayout, IconMessage, IconRocket, IconTile } from '../components/Icons'
 
 const steps = [
-  { n: '01', when: 'Dia 1', title: 'Conversa', text: 'Você me chama no WhatsApp e conta a ideia. Sem formulário chato, sem reunião de 2 horas.', icon: '💬' },
-  { n: '02', when: 'Até 2 dias', title: 'Layout', text: 'Você vê o visual do site antes de eu programar e pede os ajustes que quiser.', icon: '✏️' },
-  { n: '03', when: '3 a 7 dias', title: 'Desenvolvimento', text: 'Site rápido, responsivo e já preparado para aparecer no Google.', icon: '⚙️' },
-  { n: '04', when: 'Entrega', title: 'No ar + suporte', text: 'Publico com SSL e domínio, te ensino a usar e os ajustes iniciais estão inclusos.', icon: '🚀' },
+  { n: '01', when: 'Dia 1', title: 'Conversa', text: 'Você me chama no WhatsApp e conta a ideia. Sem formulário chato, sem reunião de 2 horas.', icon: IconMessage },
+  { n: '02', when: 'Até 2 dias', title: 'Layout', text: 'Você vê o visual do site antes de eu programar e pede os ajustes que quiser.', icon: IconLayout },
+  { n: '03', when: '3 a 7 dias', title: 'Desenvolvimento', text: 'Site rápido, responsivo e já preparado para aparecer no Google.', icon: IconCode },
+  { n: '04', when: 'Entrega', title: 'No ar + suporte', text: 'Publico com SSL e domínio, te ensino a usar e os ajustes iniciais estão inclusos.', icon: IconRocket },
 ]
 
 export function Process() {
@@ -50,8 +51,8 @@ export function Process() {
                     {s.n}
                   </span>
                   <div className="flex items-center gap-3">
-                    <span className="grid h-12 w-12 animate-[float_4s_ease-in-out_infinite] place-items-center rounded-2xl bg-sun/10 text-2xl" style={{ animationDelay: `${i * 0.4}s` }}>
-                      {s.icon}
+                    <span className="animate-[float_4s_ease-in-out_infinite]" style={{ animationDelay: `${i * 0.4}s` }}>
+                      <IconTile icon={s.icon} size="lg" />
                     </span>
                     <span className="font-mono text-xs uppercase tracking-widest text-gold">{s.when}</span>
                   </div>
