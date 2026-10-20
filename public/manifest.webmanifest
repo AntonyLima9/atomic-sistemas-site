@@ -1,0 +1,13 @@
+{
+  "name": "Atomic Sistemas",
+  "short_name": "Atomic",
+  "description": "Sites, painéis e aplicativos rápidos e acessíveis.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070707",
+  "theme_color": "#070707",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

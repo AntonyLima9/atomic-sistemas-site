@@ -1,0 +1,485 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --black: #070707;
+  --black-2: #111111;
+  --black-3: #1a1a1a;
+  --white: #f7f5ef;
+  --gray: #9a978f;
+  --gold: #e2b82c;
+  --yellow: #ffd23f;
+  --yellow-glow: rgba(255, 210, 63, 0.35);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: 18px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+html {
+  background: var(--black);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+body {
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--black);
+  overflow-x: hidden;
+}
+::selection {
+  background: var(--yellow);
+  color: var(--black);
+}
+:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.has-cursor,
+.has-cursor * {
+  cursor: none !important;
+}
+
+/* ---------- Vidro ---------- */
+.glass {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border: 1px solid var(--glass-border);
+  isolation: isolate;
+}
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 210, 63, 0.14), transparent 60%);
+}
+.glass:hover::before {
+  opacity: 1;
+}
+.glass-dark {
+  background: rgba(7, 7, 7, 0.55);
+}
+
+/* ---------- Tipografia ---------- */
+.h-display {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+}
+.label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.text-shine {
+  background: linear-gradient(100deg, var(--gold) 20%, #fff6c9 40%, var(--yellow) 50%, var(--gold) 70%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 4.5s linear infinite;
+}
+@keyframes shine {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+
+/* ---------- Split text ---------- */
+.split .w {
+  display: inline-block;
+  white-space: nowrap;
+}
+.split .c {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.45em) rotate(4deg);
+  filter: blur(12px);
+  transition:
+    opacity 0.9s var(--ease),
+    transform 1.1s var(--ease),
+    filter 0.9s var(--ease);
+  transition-delay: calc(var(--i) * 22ms);
+}
+.split.is-in .c {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 1s var(--ease),
+    transform 1.2s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 999px;
+  padding: 1rem 1.6rem;
+  font-weight: 600;
+  font-size: 0.98rem;
+  transition:
+    background 0.3s,
+    color 0.3s,
+    box-shadow 0.4s var(--ease);
+  will-change: transform;
+}
+.btn-gold {
+  background: var(--yellow);
+  color: var(--black);
+  box-shadow: 0 0 0 0 var(--yellow-glow);
+}
+.btn-gold:hover {
+  box-shadow: 0 10px 50px -6px var(--yellow-glow);
+}
+.btn-ghost {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+}
+.btn-ghost:hover {
+  border-color: var(--gold);
+  color: var(--yellow);
+}
+.btn .arrow {
+  transition: transform 0.4s var(--ease);
+}
+.btn:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* ---------- Marquee ---------- */
+.marquee {
+  --skew: 0deg;
+  transform: skewX(var(--skew));
+  transition: transform 0.3s ease-out;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Borda girando (plano destaque) ---------- */
+.border-spin {
+  position: relative;
+}
+.border-spin::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(from var(--angle), transparent 0 55%, var(--gold) 70%, #fff3b0 78%, var(--yellow) 86%, transparent 100%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin-angle 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes spin-angle {
+  to {
+    --angle: 360deg;
+  }
+}
+
+/* ---------- Grain ---------- */
+.grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.9s steps(4) infinite;
+}
+@keyframes grain {
+  25% {
+    transform: translate(-3%, 2%);
+  }
+  50% {
+    transform: translate(2%, -3%);
+  }
+  75% {
+    transform: translate(-2%, -1%);
+  }
+}
+
+/* ---------- WhatsApp flutuante ---------- */
+.pulse::before,
+.pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  border: 2px solid var(--yellow);
+  animation: pulse 2.4s var(--ease) infinite;
+}
+.pulse::after {
+  animation-delay: 1.2s;
+}
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* ---------- Acordeão ---------- */
+.acc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--ease);
+}
+.acc-body > div {
+  overflow: hidden;
+}
+.acc[data-open='true'] .acc-body {
+  grid-template-rows: 1fr;
+}
+.acc .plus {
+  transition: transform 0.5s var(--ease);
+}
+.acc[data-open='true'] .plus {
+  transform: rotate(135deg);
+}
+
+/* ---------- Loader ---------- */
+.loader-piece {
+  animation: assemble 1s var(--ease) both;
+}
+@keyframes assemble {
+  from {
+    transform: translate(var(--fx), var(--fy)) rotate(var(--fr));
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .split .c,
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ---------- Cursor ---------- */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 99px;
+  background: var(--yellow);
+  box-shadow: 0 0 12px var(--yellow);
+}
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 210, 63, 0.55);
+  display: grid;
+  place-items: center;
+  transition:
+    opacity 0.3s,
+    background 0.3s,
+    border-color 0.3s;
+}
+.cursor-ring.is-big {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  mix-blend-mode: difference;
+}
+.cursor-orbit {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+}
+.cursor-orbit i {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 99px;
+  background: var(--yellow);
+  box-shadow: 0 0 8px var(--yellow);
+  top: -2.5px;
+  left: calc(50% - 2.5px);
+}
+.cursor-orbit i:nth-child(2) {
+  top: auto;
+  bottom: -2.5px;
+  opacity: 0.6;
+}
+.cursor-ring.is-big .cursor-orbit {
+  opacity: 0;
+}
+.cursor-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #000;
+  opacity: 0;
+  transition: opacity 0.2s;
+  filter: invert(1);
+}
+.cursor-ring.is-big .cursor-label {
+  opacity: 1;
+}
+.cursor-ripple {
+  position: fixed;
+  z-index: 997;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 999px;
+  border: 1.5px solid var(--yellow);
+  pointer-events: none;
+  animation: ripple 0.7s var(--ease) forwards;
+}
+@keyframes ripple {
+  to {
+    transform: scale(9);
+    opacity: 0;
+  }
+}
+
+@keyframes scrollhint {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(200%);
+  }
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-6px) rotate(-4deg);
+  }
+}
+.step.is-active .step-dot {
+  border-color: var(--yellow);
+  background: var(--yellow);
+  box-shadow: 0 0 0 6px rgba(255, 210, 63, 0.15), 0 0 20px var(--yellow);
+}
+
+/* Ícone em cubo 3D girando */
+.cube-wrap {
+  perspective: 400px;
+}
+.cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: cube 8s linear infinite;
+}
+.group:hover .cube {
+  animation-duration: 2.5s;
+}
+.cube-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: var(--yellow);
+  background: linear-gradient(135deg, rgba(255, 210, 63, 0.18), rgba(255, 210, 63, 0.04));
+  border: 1px solid rgba(255, 210, 63, 0.35);
+  backface-visibility: hidden;
+}
+@keyframes cube {
+  from {
+    transform: rotateX(-18deg) rotateY(0);
+  }
+  to {
+    transform: rotateX(-18deg) rotateY(360deg);
+  }
+}
+
+/* print do projeto rola dentro do mockup no hover */
+.shot {
+  transition: transform 6s cubic-bezier(0.45, 0, 0.2, 1);
+}
+.group:hover .shot,
+.group:focus-within .shot {
+  transform: translateY(calc(-100% + 100cqh));
+}
+.group .relative:has(> .shot) {
+  container-type: size;
+}
