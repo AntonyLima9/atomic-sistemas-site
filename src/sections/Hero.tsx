@@ -32,7 +32,7 @@ export function Hero() {
         </div>
         <ul data-reveal className="mt-10 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs text-white/55" style={{ ['--d' as string]: '800ms' }}>
           {[
-            [IconBolt, 'Entrega em até 7 dias'],
+            [IconBolt, 'Landing page em até 7 dias'],
             [IconDevices, 'Funciona em qualquer tela'],
             [IconMessage, 'Suporte direto comigo'],
           ].map(([Icon, t]) => {

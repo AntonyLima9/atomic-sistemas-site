@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { SplitText } from '../components/SplitText'
 import { Magnetic } from '../components/Magnetic'
-import { IconArrow, IconCard, IconCheck, IconStar } from '../components/Icons'
+import { IconArrow, IconCard, IconCheck, IconClock, IconStar } from '../components/Icons'
 import { custosNoAr, planos } from '../data/planos'
 import { linkWhatsApp } from '../data/contato'
 
@@ -58,6 +58,9 @@ export function Pricing() {
                 <span className={`text-6xl font-bold tracking-[-0.04em] tabular-nums ${p.destaque ? 'text-sun' : ''}`}>
                   <Count to={p.preco} />
                 </span>
+              </p>
+              <p className={`mt-3 inline-flex items-center gap-2 self-start rounded-full px-3 py-1 text-xs font-semibold ${p.destaque ? 'bg-white/10 text-white/80' : 'bg-black/5 text-black/70'}`}>
+                <IconClock className="h-3.5 w-3.5" /> {p.prazo}
               </p>
               <ul className="mt-8 flex-1 space-y-3">
                 {p.inclui.map((t) => (

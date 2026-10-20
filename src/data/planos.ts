@@ -1,9 +1,13 @@
 // Edite aqui os planos e preços.
+// Escopo e prazos baseados nas tabelas de mercado de 2026 (freelancer, faixa de entrada):
+// landing simples 8–20h e 1–2 semanas; institucional 5 páginas ~3 semanas; site com painel 3–6 semanas;
+// 2 rodadas de ajuste é o padrão mais citado; treinamento do painel em menos de 1 hora.
 export type Plano = {
   id: string
   nome: string
   subtitulo: string
   preco: number
+  prazo: string
   paraQuem: string
   inclui: string[]
   destaque?: boolean
@@ -15,27 +19,33 @@ export const planos: Plano[] = [
     nome: 'Start',
     subtitulo: 'Landing Page',
     preco: 500,
-    paraQuem: 'Para quem precisa estar online já.',
+    prazo: 'Entrega em até 7 dias',
+    paraQuem: 'Uma página única para apresentar seu negócio e captar contatos.',
     inclui: [
-      '1 página com design moderno',
-      '100% responsivo (celular e PC)',
-      'Botão de WhatsApp e links do Instagram',
-      'Publicação no ar com SSL',
+      '1 página com até 5 seções (início, benefícios, depoimentos, contato e rodapé)',
+      'Layout responsivo para celular e computador',
+      'Formulário e botão que levam ao seu WhatsApp',
+      'SEO on-page básico (título, descrição e estrutura)',
+      '2 rodadas de ajustes',
+      'Publicação com SSL (cadeado de segurança)',
     ],
   },
   {
     id: 'pro',
     nome: 'Pro',
-    subtitulo: 'Site Completo',
+    subtitulo: 'Site Institucional',
     preco: 750,
-    paraQuem: 'Para empresas que querem passar autoridade.',
+    prazo: 'Entrega em 2 a 3 semanas',
+    paraQuem: 'Para empresas que precisam de um site completo com várias páginas.',
     destaque: true,
     inclui: [
-      'Até 5 seções ou páginas',
-      'Animações e efeitos modernos',
-      'Galeria ou catálogo de produtos',
-      'Google Maps e SEO básico',
-      'Formulário que cai no seu WhatsApp',
+      'Até 5 páginas (ex.: início, sobre, serviços, galeria e contato)',
+      'Layout responsivo para celular e computador',
+      'Formulário de contato integrado ao WhatsApp',
+      'SEO on-page básico em todas as páginas',
+      'Google Analytics configurado',
+      '2 rodadas de ajustes',
+      'Publicação com SSL e ajuda para conectar seu domínio',
     ],
   },
   {
@@ -43,12 +53,14 @@ export const planos: Plano[] = [
     nome: 'Premium',
     subtitulo: 'Site + Painel',
     preco: 1000,
-    paraQuem: 'Para quem quer atualizar tudo sozinho.',
+    prazo: 'Entrega em 3 a 4 semanas',
+    paraQuem: 'Para quem quer atualizar textos, fotos e produtos sozinho.',
     inclui: [
       'Tudo do plano Pro',
-      'Painel para editar produtos, preços e textos',
-      'Efeitos 3D e animações avançadas',
-      'Treinamento para usar o painel',
+      'Painel para editar textos, fotos, produtos e preços',
+      'Login seguro para você acessar o painel',
+      'Treinamento por videochamada (até 1 hora)',
+      'Guia rápido de uso do painel',
     ],
   },
 ]

@@ -104,6 +104,12 @@ export const IconCard = (p: P) => (
     <path d="M2.5 10h19M6.5 15h3" />
   </Line>
 )
+export const IconClock = (p: P) => (
+  <Line {...p}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 7v5l3 2" />
+  </Line>
+)
 export const IconStar = ({ className = 'h-3.5 w-3.5' }: P) => (
   <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden>
     <path d="m12 2.8 2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3-4.6-4.4 6.3-.9L12 2.8Z" />

@@ -6,9 +6,9 @@ import { IconCode, IconLayout, IconMessage, IconRocket, IconTile } from '../comp
 
 const steps = [
   { n: '01', when: 'Dia 1', title: 'Conversa', text: 'Você me chama no WhatsApp e conta a ideia. Sem formulário chato, sem reunião de 2 horas.', icon: IconMessage },
-  { n: '02', when: 'Até 2 dias', title: 'Layout', text: 'Você vê o visual do site antes de eu programar e pede os ajustes que quiser.', icon: IconLayout },
-  { n: '03', when: '3 a 7 dias', title: 'Desenvolvimento', text: 'Site rápido, responsivo e já preparado para aparecer no Google.', icon: IconCode },
-  { n: '04', when: 'Entrega', title: 'No ar + suporte', text: 'Publico com SSL e domínio, te ensino a usar e os ajustes iniciais estão inclusos.', icon: IconRocket },
+  { n: '02', when: 'Até 2 dias', title: 'Layout', text: 'Você vê o visual do site antes de eu programar. São 2 rodadas de ajustes inclusas.', icon: IconLayout },
+  { n: '03', when: '1 a 3 semanas', title: 'Desenvolvimento', text: 'Landing page em até 7 dias; sites e painéis em 2 a 4 semanas. Responsivo e preparado para o Google.', icon: IconCode },
+  { n: '04', when: 'Entrega', title: 'No ar + suporte', text: 'Publico com SSL, ajudo a conectar seu domínio e, no plano com painel, te ensino a usar.', icon: IconRocket },
 ]
 
 export function Process() {
@@ -33,7 +33,7 @@ export function Process() {
     <section id="processo" className="relative px-5 py-32 md:px-10">
       <div className="mx-auto max-w-6xl">
         <Scramble text="// 02 — COMO EU TRABALHO" />
-        <SplitText as="h2" text="Do *oi* ao site no ar em poucos dias." className="h-display mt-5 max-w-3xl text-5xl md:text-7xl" />
+        <SplitText as="h2" text="Do *oi* ao site no ar em poucas semanas." className="h-display mt-5 max-w-3xl text-5xl md:text-7xl" />
 
         <div ref={wrap} className="relative mt-20">
           <div className="absolute bottom-0 left-[19px] top-0 w-px bg-white/10 md:left-1/2" />
