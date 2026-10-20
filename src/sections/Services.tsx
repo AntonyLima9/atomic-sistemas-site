@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { SplitText } from '../components/SplitText'
 import { Scramble } from '../components/Scramble'
-import { IconApp, IconPanel, IconSite } from '../components/Icons'
+import { IconApp, IconPanel, IconSite, IconTile } from '../components/Icons'
 import { isTouch } from '../lib/env'
 
 const services = [
@@ -31,15 +31,7 @@ function TiltCard({ s, i }: { s: (typeof services)[number]; i: number }) {
         data-cursor="ver"
       >
         <div className="[transform:translateZ(50px)]">
-          <div className="cube-wrap h-16 w-16">
-            <div className="cube">
-              {[0, 1, 2, 3].map((f) => (
-                <span key={f} className="cube-face" style={{ transform: `rotateY(${f * 90}deg) translateZ(32px)` }}>
-                  <Icon className="h-7 w-7" />
-                </span>
-              ))}
-            </div>
-          </div>
+          <IconTile icon={Icon} size="lg" />
           <h3 className="h-display mt-8 text-3xl">{s.title}</h3>
           <p className="mt-3 text-white/65">{s.text}</p>
           <div className="mt-6 flex flex-wrap gap-2">

@@ -51,9 +51,7 @@ export function Process() {
                     {s.n}
                   </span>
                   <div className="flex items-center gap-3">
-                    <span className="animate-[float_4s_ease-in-out_infinite]" style={{ animationDelay: `${i * 0.4}s` }}>
-                      <IconTile icon={s.icon} size="lg" />
-                    </span>
+                    <IconTile icon={s.icon} size="lg" />
                     <span className="font-mono text-xs uppercase tracking-widest text-gold">{s.when}</span>
                   </div>
                   <h3 className="h-display mt-5 text-3xl md:text-4xl">{s.title}</h3>
