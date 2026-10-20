@@ -53,9 +53,9 @@ export function Pricing() {
               <p className={`font-mono text-xs uppercase tracking-widest ${p.destaque ? 'text-gold' : 'text-[#8a6d0f]'}`}>{p.subtitulo}</p>
               <h3 className="h-display mt-2 text-4xl">{p.nome}</h3>
               <p className={`mt-2 text-sm ${p.destaque ? 'text-white/60' : 'text-black/55'}`}>{p.paraQuem}</p>
-              <p className="mt-8 flex items-baseline gap-2 font-mono">
-                <span className={`text-lg ${p.destaque ? 'text-white/60' : 'text-black/50'}`}>R$</span>
-                <span className={`text-6xl font-semibold tracking-tight ${p.destaque ? 'text-sun' : ''}`}>
+              <p className="mt-8 flex items-baseline gap-2 font-display">
+                <span className={`text-xl font-semibold ${p.destaque ? 'text-white/60' : 'text-black/50'}`}>R$</span>
+                <span className={`text-6xl font-bold tracking-[-0.04em] tabular-nums ${p.destaque ? 'text-sun' : ''}`}>
                   <Count to={p.preco} />
                 </span>
               </p>
@@ -98,7 +98,7 @@ export function Pricing() {
                     <p className="font-semibold">{c.item}</p>
                     <p className="mt-1 text-sm text-white/55">{c.obs}</p>
                   </div>
-                  <span className="shrink-0 font-mono text-xl text-sun">{c.valor}</span>
+                  <span className="shrink-0 font-display text-xl font-semibold text-sun">{c.valor}</span>
                 </li>
               ))}
             </ul>

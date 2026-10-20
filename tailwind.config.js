@@ -13,7 +13,8 @@ export default {
       fontFamily: {
         display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        // "mono" virou Inter com números tabulares: rótulos e números sem cara de código
+        mono: ['Inter', 'system-ui', 'sans-serif'],
       },
       transitionTimingFunction: { expo: 'cubic-bezier(.16,1,.3,1)' },
     },
