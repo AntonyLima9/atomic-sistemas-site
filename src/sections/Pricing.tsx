@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { SplitText } from '../components/SplitText'
 import { Magnetic } from '../components/Magnetic'
 import { IconArrow, IconCard, IconCheck, IconClock, IconStar } from '../components/Icons'
-import { custosNoAr, planos } from '../data/planos'
+import { custosNoAr, manutencao, planos } from '../data/planos'
 import { linkWhatsApp } from '../data/contato'
 
 const fmt = (n: number) => n.toLocaleString('pt-BR')
@@ -91,6 +91,41 @@ export function Pricing() {
           Prazos contados a partir do envio do conteúdo (textos, fotos e logo). Valores válidos para o escopo descrito em cada plano;
           itens extras são orçados antes de começar. Todo projeto é formalizado em contrato.
         </p>
+
+        <div data-reveal className="mt-10 grid items-center gap-8 rounded-[28px] border border-[#b8920f]/30 bg-white/70 p-8 md:grid-cols-[1fr_1.4fr_auto] md:p-10">
+          <div>
+            <p className="font-mono text-xs uppercase tracking-widest text-[#8a6d0f]">Depois da entrega</p>
+            <h3 className="h-display mt-2 text-3xl">{manutencao.nome}</h3>
+            <p className="mt-4 flex items-baseline gap-1.5 font-display">
+              <span className="text-lg font-semibold text-black/50">R$</span>
+              <span className="text-5xl font-bold tracking-[-0.04em]">
+                <Count to={manutencao.preco} />
+              </span>
+              <span className="text-lg font-semibold text-black/50">/mês</span>
+            </p>
+            <p className="mt-2 text-sm text-black/55">{manutencao.resumo}</p>
+          </div>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {manutencao.inclui.map((t) => (
+              <li key={t} className="flex gap-3 text-[0.95rem]">
+                <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-ink text-sun">
+                  <IconCheck className="h-3 w-3" />
+                </span>
+                {t}
+              </li>
+            ))}
+          </ul>
+          <Magnetic>
+            <a
+              href={linkWhatsApp(`Olá! Tenho interesse na ${manutencao.nome.toLowerCase()} de R$ ${manutencao.preco}/mês.`)}
+              target="_blank"
+              rel="noopener"
+              className="btn bg-ink text-paper hover:bg-black"
+            >
+              Quero manutenção <IconArrow className="arrow h-4 w-4" />
+            </a>
+          </Magnetic>
+        </div>
 
         <div data-reveal className="mt-16 overflow-hidden rounded-[28px] bg-ink p-8 text-paper shadow-[0_40px_80px_-40px_rgba(0,0,0,.5)] md:p-12">
           <div className="grid gap-10 md:grid-cols-[1fr_1.4fr]">

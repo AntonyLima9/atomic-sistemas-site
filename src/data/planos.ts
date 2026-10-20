@@ -34,7 +34,7 @@ export const planos: Plano[] = [
     id: 'pro',
     nome: 'Pro',
     subtitulo: 'Site Institucional',
-    preco: 750,
+    preco: 1200,
     prazo: 'Entrega em 2 a 3 semanas',
     paraQuem: 'Para empresas que precisam de um site completo com várias páginas.',
     destaque: true,
@@ -53,7 +53,7 @@ export const planos: Plano[] = [
     id: 'premium',
     nome: 'Premium',
     subtitulo: 'Site + Painel',
-    preco: 1000,
+    preco: 1900,
     prazo: 'Entrega em 3 a 4 semanas',
     paraQuem: 'Para quem quer atualizar textos, fotos e produtos sozinho.',
     inclui: [
@@ -65,6 +65,19 @@ export const planos: Plano[] = [
     ],
   },
 ]
+
+// Plano mensal opcional (referência de mercado: manutenção básica R$ 180–450/mês).
+export const manutencao = {
+  nome: 'Manutenção mensal',
+  preco: 150,
+  resumo: 'Opcional, sem fidelidade. Para quem quer o site sempre em dia sem se preocupar.',
+  inclui: [
+    'Até 1 hora de ajustes por mês (textos, fotos, preços)',
+    'Backup e atualizações de segurança',
+    'Monitoramento do site no ar',
+    'Suporte prioritário pelo WhatsApp',
+  ],
+}
 
 export const custosNoAr = [
   { item: 'Hospedagem (Firebase)', valor: 'R$ 0', obs: 'No plano gratuito do Google, dentro dos limites de uso. Atende a maioria dos sites institucionais.' },
