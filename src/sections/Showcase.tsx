@@ -61,7 +61,7 @@ export function Showcase({ enabled3d }: { enabled3d: boolean }) {
 
   return (
     <section id="showcase" ref={root} className="relative h-[420vh] md:h-[520vh]" aria-label="Demonstração: MacBook e iPhone com sites feitos pela Atomic">
-      <div ref={layer} className="sticky top-0 h-[100svh] overflow-hidden" data-cursor-zone="girar">
+      <div ref={layer} className="sticky top-0 h-[100svh] overflow-hidden">
         {overlays.map((o, i) => (
           <div
             key={o.title}

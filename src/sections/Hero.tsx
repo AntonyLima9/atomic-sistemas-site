@@ -19,12 +19,12 @@ export function Hero() {
           </p>
           <div data-reveal className="flex flex-wrap gap-3" style={{ ['--d' as string]: '650ms' }}>
             <Magnetic>
-              <a href={linkWhatsApp()} target="_blank" rel="noopener" className="btn btn-gold" data-cursor="falar">
+              <a href={linkWhatsApp()} target="_blank" rel="noopener" className="btn btn-gold">
                 Quero meu site <IconArrow className="arrow h-4 w-4" />
               </a>
             </Magnetic>
             <Magnetic>
-              <a href="#showcase" onClick={(e) => (e.preventDefault(), scrollTo('#showcase'))} className="btn btn-ghost" data-cursor="rolar">
+              <a href="#showcase" onClick={(e) => (e.preventDefault(), scrollTo('#showcase'))} className="btn btn-ghost">
                 Ver como funciona <IconDown />
               </a>
             </Magnetic>

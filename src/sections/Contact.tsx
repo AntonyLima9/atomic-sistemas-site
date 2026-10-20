@@ -42,7 +42,7 @@ export function Contact() {
 
         <div className="mt-10 grid gap-5 md:grid-cols-2">
           <Magnetic strength={8} className="block">
-            <a href={linkWhatsApp()} target="_blank" rel="noopener" data-cursor="falar" className="glass glass-dark group flex items-center justify-between gap-4 rounded-[28px] p-7 md:p-9">
+            <a href={linkWhatsApp()} target="_blank" rel="noopener" className="glass glass-dark group flex items-center justify-between gap-4 rounded-[28px] p-7 md:p-9">
               <span className="flex items-center gap-5">
                 <span className="grid h-16 w-16 place-items-center rounded-2xl bg-sun text-ink">
                   <IconChat className="h-8 w-8" />
@@ -56,7 +56,7 @@ export function Contact() {
             </a>
           </Magnetic>
           <Magnetic strength={8} className="block">
-            <a href={linkInstagram} target="_blank" rel="noopener" data-cursor="seguir" className="glass glass-dark group flex items-center justify-between gap-4 rounded-[28px] p-7 md:p-9">
+            <a href={linkInstagram} target="_blank" rel="noopener" className="glass glass-dark group flex items-center justify-between gap-4 rounded-[28px] p-7 md:p-9">
               <span className="flex items-center gap-5">
                 <span className="grid h-16 w-16 place-items-center rounded-2xl border border-gold/50 text-sun">
                   <IconInsta className="h-8 w-8" />
@@ -90,7 +90,7 @@ export function Contact() {
             <span className="mb-2 block font-mono text-xs text-white/50">Mensagem</span>
             <input className={field} value={msg} onChange={(e) => setMsg(e.target.value)} placeholder="Conte rapidinho sua ideia" />
           </label>
-          <button type="submit" className="btn btn-gold h-[52px] justify-center" data-cursor="enviar">
+          <button type="submit" className="btn btn-gold h-[52px] justify-center">
             Enviar no WhatsApp <IconArrow className="arrow h-4 w-4" />
           </button>
         </form>

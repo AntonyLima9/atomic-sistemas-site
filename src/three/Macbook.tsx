@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three-stdlib'
 import { planeFromShape, roundedRectShape } from './textures'
 import { logoShapes } from './logoShapes'
+import { deviceMaterials } from './materials'
 
 // Proporções de um MacBook Pro 14" (31,3 × 22,1 × 1,55 cm) em unidades da cena.
 export const MAC = { w: 3.2, d: 2.24, baseH: 0.085, lidH: 0.032, corner: 0.13, screenW: 3.06, screenH: 1.9125 }
@@ -159,21 +160,15 @@ export const Macbook = forwardRef<THREE.Group, Props>(function Macbook({ screen,
   const keys = useMemo(keyboardLayout, [])
 
   const m = useMemo(() => {
-    const aluminum = new THREE.MeshPhysicalMaterial({
-      color: '#55575d',
-      metalness: 1,
-      roughness: 0.34,
-      clearcoat: 0.15,
-      clearcoatRoughness: 0.5,
-      envMapIntensity: 1.25,
-    })
+    const dm = deviceMaterials()
     return {
-      aluminum,
-      key: new THREE.MeshPhysicalMaterial({ color: '#0b0b0d', roughness: 0.5, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.6 }),
+      // faces em alumínio jateado + chanfros polidos (grupos 0 e 1 da extrusão)
+      shell: [dm.aluminum, dm.aluminumEdge],
+      key: dm.keycap,
       touch: new THREE.MeshPhysicalMaterial({ color: '#151518', roughness: 0.15, metalness: 0.4, clearcoat: 1 }),
       black: new THREE.MeshStandardMaterial({ color: '#050506', roughness: 0.6 }),
       bezel: new THREE.MeshPhysicalMaterial({ color: '#020203', roughness: 0.08, metalness: 0.2, clearcoat: 1 }),
-      trackpad: new THREE.MeshPhysicalMaterial({ color: '#4d4f55', metalness: 0.6, roughness: 0.22, clearcoat: 1, clearcoatRoughness: 0.15 }),
+      trackpad: new THREE.MeshPhysicalMaterial({ color: '#53565c', metalness: 0.7, roughness: 0.3, roughnessMap: dm.aluminum.roughnessMap, clearcoat: 0.8, clearcoatRoughness: 0.25 }),
       rubber: new THREE.MeshStandardMaterial({ color: '#111', roughness: 0.9 }),
       logo: new THREE.MeshPhysicalMaterial({ color: '#E2B82C', metalness: 1, roughness: 0.12, clearcoat: 1, emissive: '#5a4510', emissiveIntensity: 0.4 }),
     }
@@ -216,7 +211,7 @@ export const Macbook = forwardRef<THREE.Group, Props>(function Macbook({ screen,
   return (
     <group ref={ref}>
       {/* base */}
-      <mesh geometry={geo.base} material={m.aluminum} />
+      <mesh geometry={geo.base} material={m.shell} />
       <mesh geometry={geo.deckPlane} position={[0, T + 0.0009, 0]}>
         <meshStandardMaterial map={tex.deck} transparent roughness={0.6} depthWrite={false} />
       </mesh>
@@ -264,7 +259,7 @@ export const Macbook = forwardRef<THREE.Group, Props>(function Macbook({ screen,
       {/* tampa: pivô na dobradiça */}
       <group ref={lidRef} position={[0, T, -MAC.d / 2 + 0.035]}>
         <group position={[0, MAC.lidH / 2 + 0.003, MAC.d / 2 - 0.035]}>
-          <mesh geometry={geo.lid} material={m.aluminum} />
+          <mesh geometry={geo.lid} material={m.shell} />
           {/* face interna: vidro preto de ponta a ponta */}
           <mesh geometry={geo.bezel} position={[0, -MAC.lidH / 2 - 0.0006, 0]} rotation={[Math.PI, 0, 0]} material={m.bezel} />
           {/* tela */}

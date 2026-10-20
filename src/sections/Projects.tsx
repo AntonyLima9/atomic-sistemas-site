@@ -64,7 +64,7 @@ export function Projects() {
           {projetos.map((p) => {
             const img = p.imagem ?? (p.modelo && imgs ? imgs[p.modelo] : undefined)
             return (
-              <article key={p.nome} className="glass group flex h-[68svh] w-[82vw] shrink-0 flex-col rounded-[28px] p-4 md:w-[46vw] md:p-5" data-cursor="ver">
+              <article key={p.nome} className="glass group flex h-[68svh] w-[82vw] shrink-0 flex-col rounded-[28px] p-4 md:w-[46vw] md:p-5">
                 <div className="min-h-0 flex-1">
                   <Shot p={p} img={img} />
                 </div>
@@ -78,7 +78,7 @@ export function Projects() {
                     <p className="mt-1 max-w-md text-sm text-white/60">{p.descricao}</p>
                   </div>
                   {p.link && (
-                    <a href={p.link} target="_blank" rel="noopener" className="btn btn-ghost shrink-0 !px-4 !py-2.5 text-sm" data-cursor="abrir">
+                    <a href={p.link} target="_blank" rel="noopener" className="btn btn-ghost shrink-0 !px-4 !py-2.5 text-sm">
                       Abrir site ↗
                     </a>
                   )}
@@ -90,7 +90,7 @@ export function Projects() {
             href={linkWhatsApp('Olá! Quero ser o próximo projeto da Atomic.')}
             target="_blank"
             rel="noopener"
-            data-cursor="falar"
+           
             className="group relative flex h-[68svh] w-[82vw] shrink-0 flex-col justify-between overflow-hidden rounded-[28px] bg-sun p-8 text-ink md:w-[34vw] md:p-10"
           >
             <span className="font-mono text-xs font-semibold tracking-widest">// SEU PROJETO AQUI</span>

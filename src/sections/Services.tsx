@@ -28,7 +28,7 @@ function TiltCard({ s, i }: { s: (typeof services)[number]; i: number }) {
         onPointerMove={move}
         onPointerLeave={leave}
         className="glass group h-full rounded-[28px] p-8 transition-transform duration-500 ease-expo [transform-style:preserve-3d]"
-        data-cursor="ver"
+       
       >
         <div className="[transform:translateZ(50px)]">
           <IconTile icon={Icon} size="lg" />

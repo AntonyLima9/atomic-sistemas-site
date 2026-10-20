@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ContactShadows, Environment, Grid, Lightformer, PerformanceMonitor } from '@react-three/drei'
+import { ContactShadows, Environment, Lightformer, PerformanceMonitor } from '@react-three/drei'
 import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { Macbook } from './Macbook'
@@ -137,12 +137,16 @@ function Lights() {
       {/* contorno: branco frio de um lado, dourado da marca do outro (atrás, só pega a silhueta) */}
       <spotLight position={[-4.5, -0.2, -5]} angle={0.45} penumbra={1} intensity={10} color="#E2B82C" distance={12} />
       <spotLight position={[5, 0.4, -5]} angle={0.45} penumbra={1} intensity={8} color="#dfe6ff" distance={12} />
-      <Environment resolution={256} frames={1}>
-        {/* estúdio neutro: softboxes brancos, para o alumínio ficar cinza e não dourado */}
-        <Lightformer form="rect" intensity={2.2} position={[0, 6, 1]} scale={[12, 3, 1]} rotation-x={Math.PI / 2} />
-        <Lightformer form="rect" intensity={1.4} position={[-6, 2, 2]} scale={[3, 9, 1]} rotation-y={Math.PI / 2} />
-        <Lightformer form="rect" intensity={1.4} position={[6, 2, 2]} scale={[3, 9, 1]} rotation-y={-Math.PI / 2} />
-        <Lightformer form="rect" intensity={0.8} position={[0, 1, 8]} scale={[10, 2, 1]} />
+      <Environment resolution={512} frames={1}>
+        {/* estúdio de fotografia de produto: softbox grande em cima + réguas de luz que desenham
+            os filetes de brilho nas bordas do alumínio e do titânio */}
+        <color attach="background" args={['#0b0b0c']} />
+        <Lightformer form="rect" intensity={2.4} position={[0, 7, 0]} scale={[10, 6, 1]} rotation-x={Math.PI / 2} />
+        <Lightformer form="rect" intensity={5} position={[-5, 1.5, 0]} scale={[0.35, 9, 1]} rotation-y={Math.PI / 2} />
+        <Lightformer form="rect" intensity={5} position={[5, 1.5, 0]} scale={[0.35, 9, 1]} rotation-y={-Math.PI / 2} />
+        <Lightformer form="rect" intensity={3} position={[0, 2.5, -6]} scale={[12, 0.3, 1]} />
+        <Lightformer form="rect" intensity={1.1} position={[0, 0.5, 7]} scale={[9, 2.5, 1]} rotation-y={Math.PI} />
+        <Lightformer form="rect" intensity={0.6} color="#ffe6a8" position={[-4, -1, 4]} scale={[3, 1.5, 1]} rotation-y={Math.PI * 0.75} />
       </Environment>
     </>
   )
@@ -175,20 +179,12 @@ export default function Scene() {
       <Devices mobile={mobile} />
       <LogoAssembly mobile={mobile} />
       <Atoms count={mobile ? 22 : 60} />
-      <Grid
-        position={[0, -2.1, 0]}
-        args={[40, 40]}
-        cellSize={0.6}
-        cellThickness={0.6}
-        cellColor="#1f1f1f"
-        sectionSize={3}
-        sectionThickness={1}
-        sectionColor="#4d3f12"
-        fadeDistance={30}
-        fadeStrength={1.5}
-        infiniteGrid
-      />
-      {!mobile && <ContactShadows position={[0, -2.08, 0]} opacity={0.55} scale={14} blur={2.6} far={4} resolution={512} color="#000" />}
+      {/* piso quadriculado: linhas opacas (somem na névoa), assim os aparelhos sempre ficam na frente */}
+      <group position={[0, -2.7, 0]}>
+        <gridHelper args={[80, 134, '#1b1b1b', '#1b1b1b']} />
+        <gridHelper args={[80, 27, '#3d3210', '#3d3210']} position={[0, 0.002, 0]} />
+      </group>
+      {!mobile && <ContactShadows position={[0, -2.68, 0]} opacity={0.55} scale={14} blur={2.6} far={4} resolution={512} color="#000" />}
       {fx && (
         <EffectComposer multisampling={0}>
           <Bloom mipmapBlur luminanceThreshold={0.95} luminanceSmoothing={0.2} intensity={0.9} />

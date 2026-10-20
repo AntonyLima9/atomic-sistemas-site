@@ -51,10 +51,6 @@ body {
   border-radius: 6px;
 }
 
-.has-cursor,
-.has-cursor * {
-  cursor: none !important;
-}
 
 /* ---------- Vidro ---------- */
 .glass {
@@ -329,94 +325,22 @@ body {
   }
 }
 
-/* ---------- Cursor ---------- */
-.cursor-dot,
-.cursor-ring {
+/* ---------- Brilho do cursor ---------- */
+.cursor-glow {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 999;
+  z-index: 60;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s;
-}
-.cursor-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 99px;
-  background: var(--yellow);
-  box-shadow: 0 0 12px var(--yellow);
-}
-.cursor-ring {
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 210, 63, 0.55);
-  display: grid;
-  place-items: center;
-  transition:
-    opacity 0.3s,
-    background 0.3s,
-    border-color 0.3s;
-}
-.cursor-ring.is-big {
-  background: var(--yellow);
-  border-color: var(--yellow);
-  mix-blend-mode: difference;
-}
-.cursor-orbit {
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-}
-.cursor-orbit i {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 99px;
-  background: var(--yellow);
-  box-shadow: 0 0 8px var(--yellow);
-  top: -2.5px;
-  left: calc(50% - 2.5px);
-}
-.cursor-orbit i:nth-child(2) {
-  top: auto;
-  bottom: -2.5px;
-  opacity: 0.6;
-}
-.cursor-ring.is-big .cursor-orbit {
-  opacity: 0;
-}
-.cursor-label {
-  font-family: Inter, system-ui, sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #000;
-  opacity: 0;
-  transition: opacity 0.2s;
-  filter: invert(1);
-}
-.cursor-ring.is-big .cursor-label {
-  opacity: 1;
-}
-.cursor-ripple {
-  position: fixed;
-  z-index: 997;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  border-radius: 999px;
-  border: 1.5px solid var(--yellow);
-  pointer-events: none;
-  animation: ripple 0.7s var(--ease) forwards;
-}
-@keyframes ripple {
-  to {
-    transform: scale(9);
-    opacity: 0;
-  }
+  background: radial-gradient(circle, rgba(255, 210, 63, 0.22) 0%, rgba(255, 210, 63, 0.08) 35%, transparent 70%);
+  filter: blur(40px);
+  mix-blend-mode: screen;
+  transition: opacity 0.5s;
+  will-change: transform;
 }
 
 @keyframes scrollhint {
@@ -472,19 +396,6 @@ body {
 }
 .icon-tile svg {
   filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.45));
-}
-.cursor-ring.is-zone {
-  border-color: var(--yellow);
-  background: rgba(7, 7, 7, 0.35);
-  backdrop-filter: blur(4px);
-}
-.cursor-ring.is-zone .cursor-orbit {
-  opacity: 0;
-}
-.cursor-ring.is-zone .cursor-label {
-  opacity: 1;
-  color: var(--yellow);
-  filter: none;
 }
 
 .font-mono {

@@ -40,7 +40,7 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noopener"
       aria-label="Falar no WhatsApp"
-      data-cursor="falar"
+     
       className="pulse fixed bottom-5 right-5 z-[85] grid h-14 w-14 place-items-center rounded-full bg-sun text-ink shadow-[0_10px_40px_-5px_rgba(255,210,63,.6)] transition-all duration-500 ease-expo"
       style={{ transform: show ? 'none' : 'translateY(120px) scale(.6)', opacity: show ? 1 : 0 }}
       tabIndex={show ? 0 : -1}

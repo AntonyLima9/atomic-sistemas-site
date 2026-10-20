@@ -42,7 +42,7 @@ export function Footer() {
         </div>
         <div className="mt-16 flex flex-col-reverse items-start justify-between gap-6 border-t border-white/10 pt-8 text-xs text-white/40 md:flex-row md:items-center">
           <p>© {new Date().getFullYear()} Atomic Sistemas. Modelos 3D feitos em código, sem assets de terceiros.</p>
-          <button onClick={() => scrollTo(0)} className="group flex items-center gap-3 font-mono uppercase tracking-widest hover:text-sun" data-cursor="topo">
+          <button onClick={() => scrollTo(0)} className="group flex items-center gap-3 font-mono uppercase tracking-widest hover:text-sun">
             Voltar ao topo
             <LogoMark className="h-6 w-auto text-gold transition-transform duration-700 ease-expo group-hover:-translate-y-1 group-hover:rotate-[360deg]" />
           </button>

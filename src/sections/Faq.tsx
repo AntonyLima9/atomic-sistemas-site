@@ -19,7 +19,7 @@ export function Faq() {
                 className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left"
                 aria-expanded={open === i}
                 onClick={() => setOpen(open === i ? null : i)}
-                data-cursor={open === i ? 'fechar' : 'abrir'}
+               
               >
                 <span className="font-display text-lg font-semibold md:text-xl">{f.q}</span>
                 <span className="plus grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/15 text-xl text-sun">+</span>

@@ -1,76 +1,113 @@
 import { forwardRef, useMemo } from 'react'
 import * as THREE from 'three'
-import { darkMetal, planeFromShape, roundedRectShape } from './textures'
+import { planeFromShape, roundedRectShape } from './textures'
+import { deviceMaterials } from './materials'
+import { logoShapes } from './logoShapes'
 
 export const PHONE = { w: 0.92, h: 1.9, r: 0.15, depth: 0.05 }
+const BEVEL = 0.018
+const FRONT = PHONE.depth / 2 + BEVEL
+const BACK = -FRONT
 
-// iPhone modelado em código: corpo extrudado com bevel, tela arredondada, Dynamic Island e câmeras.
+// iPhone Pro modelado em código: moldura de titânio escovado, verso em vidro fosco,
+// platô de câmeras em vidro com lentes de revestimento iridescente, Dynamic Island e botões.
 export const Iphone = forwardRef<THREE.Group, { screen: THREE.Texture | null; screenMat: React.RefObject<THREE.MeshBasicMaterial> }>(
   function Iphone({ screen, screenMat }, ref) {
-    const body = useMemo(() => {
-      const g = new THREE.ExtrudeGeometry(roundedRectShape(PHONE.w, PHONE.h, PHONE.r), {
+    const mats = deviceMaterials()
+    const geo = useMemo(() => {
+      const body = new THREE.ExtrudeGeometry(roundedRectShape(PHONE.w, PHONE.h, PHONE.r), {
         depth: PHONE.depth,
         bevelEnabled: true,
-        bevelThickness: 0.018,
-        bevelSize: 0.018,
-        bevelSegments: 5,
+        bevelThickness: BEVEL,
+        bevelSize: BEVEL,
+        bevelSegments: 6,
+        curveSegments: 32,
+      })
+      body.center()
+      const plateau = new THREE.ExtrudeGeometry(roundedRectShape(0.4, 0.4, 0.1), {
+        depth: 0.008,
+        bevelEnabled: true,
+        bevelThickness: 0.004,
+        bevelSize: 0.004,
+        bevelSegments: 3,
         curveSegments: 24,
       })
-      g.center()
-      return g
+      return {
+        body,
+        plateau,
+        glass: planeFromShape(roundedRectShape(PHONE.w + 0.03, PHONE.h + 0.03, PHONE.r + 0.015), 24),
+        screen: planeFromShape(roundedRectShape(PHONE.w - 0.05, PHONE.h - 0.05, PHONE.r - 0.025), 24),
+        island: planeFromShape(roundedRectShape(0.26, 0.075, 0.0375), 12),
+        button: new THREE.CapsuleGeometry(0.008, 1, 4, 12),
+      }
     }, [])
-    const metal = useMemo(() => {
-      const m = darkMetal()
-      m.color.set('#2a2a2e')
-      return m
-    }, [])
-    const front = PHONE.depth / 2 + 0.019
-    const glassGeo = useMemo(() => planeFromShape(roundedRectShape(PHONE.w + 0.02, PHONE.h + 0.02, PHONE.r + 0.01), 24), [])
-    const screenGeo = useMemo(() => planeFromShape(roundedRectShape(PHONE.w - 0.07, PHONE.h - 0.07, PHONE.r - 0.035), 24), [])
-    const islandGeo = useMemo(() => planeFromShape(roundedRectShape(0.26, 0.075, 0.0375), 12), [])
+    const logo = useMemo(() => logoShapes(0.0011), [])
 
     return (
       <group ref={ref}>
-        <mesh geometry={body} material={metal} />
-        <mesh geometry={glassGeo} position={[0, 0, front]}>
-          <meshStandardMaterial color="#030303" roughness={0.2} />
+        {/* grupo 0 = faces (verso em vidro fosco), grupo 1 = laterais (titânio) */}
+        <mesh geometry={geo.body} material={[mats.backGlass, mats.titanium]} />
+
+        {/* frente */}
+        <mesh geometry={geo.glass} position={[0, 0, FRONT + 0.0005]} material={mats.blackGlass} />
+        <mesh geometry={geo.screen} position={[0, 0, FRONT + 0.0012]}>
+          <meshBasicMaterial key={screen ? 'on' : 'off'} ref={screenMat} map={screen} toneMapped={false} color="#000" />
         </mesh>
-        <mesh geometry={screenGeo} position={[0, 0, front + 0.001]}>
-          <meshBasicMaterial key={screen ? "on" : "off"} ref={screenMat} map={screen} toneMapped={false} color="#000" />
-        </mesh>
-        <mesh geometry={islandGeo} position={[0, PHONE.h / 2 - 0.1, front + 0.002]}>
+        <mesh geometry={geo.island} position={[0, PHONE.h / 2 - 0.085, FRONT + 0.0018]}>
           <meshBasicMaterial color="#000" />
         </mesh>
-        <mesh geometry={glassGeo} position={[0, 0, front + 0.003]}>
-          <meshPhysicalMaterial transparent opacity={0.1} roughness={0.04} metalness={1} depthWrite={false} />
+        <mesh geometry={geo.glass} position={[0, 0, FRONT + 0.0024]}>
+          <meshPhysicalMaterial transparent opacity={0.08} roughness={0.03} metalness={1} depthWrite={false} />
         </mesh>
-        {/* botões laterais */}
-        {[0.42, 0.22, 0.05].map((y, i) => (
-          <mesh key={i} position={[-PHONE.w / 2 - 0.022, y, 0]}>
-            <boxGeometry args={[0.012, i === 0 ? 0.06 : 0.13, 0.03]} />
-            <meshStandardMaterial color="#2a2a2e" metalness={0.9} roughness={0.3} />
-          </mesh>
+
+        {/* botões em titânio */}
+        {[
+          [-1, 0.5, 0.05],
+          [-1, 0.32, 0.12],
+          [-1, 0.16, 0.12],
+          [1, 0.28, 0.2],
+          [1, -0.22, 0.09],
+        ].map(([side, y, len], i) => (
+          <mesh key={i} geometry={geo.button} material={mats.titanium} position={[side * (PHONE.w / 2 + BEVEL + 0.002), y, 0]} scale={[1, len, 1.6]} />
         ))}
-        <mesh position={[PHONE.w / 2 + 0.022, 0.25, 0]}>
-          <boxGeometry args={[0.012, 0.2, 0.03]} />
-          <meshStandardMaterial color="#2a2a2e" metalness={0.9} roughness={0.3} />
-        </mesh>
-        {/* módulo de câmeras */}
-        <group position={[0.2, PHONE.h / 2 - 0.27, -PHONE.depth / 2 - 0.02]} rotation={[0, Math.PI, 0]}>
-          <mesh>
-            <boxGeometry args={[0.38, 0.38, 0.02]} />
-            <meshPhysicalMaterial color="#202024" metalness={0.6} roughness={0.2} clearcoat={1} />
-          </mesh>
-          {[
-            [-0.08, 0.08],
-            [-0.08, -0.08],
-            [0.09, 0],
-          ].map(([x, y], i) => (
-            <mesh key={i} position={[x, y, 0.02]} rotation={[Math.PI / 2, 0, 0]}>
-              <cylinderGeometry args={[0.062, 0.066, 0.03, 32]} />
-              <meshPhysicalMaterial color="#050508" metalness={0.5} roughness={0.05} clearcoat={1} />
+
+        {/* verso: logo polida e platô das câmeras (visto de trás, à esquerda no topo) */}
+        <group position={[0, 0.05, BACK - 0.0006]} rotation={[0, Math.PI, 0]}>
+          {logo.map((s, i) => (
+            <mesh key={i}>
+              <shapeGeometry args={[s]} />
+              <meshPhysicalMaterial color="#E2B82C" metalness={1} roughness={0.1} clearcoat={1} />
             </mesh>
           ))}
+        </group>
+        <group position={[PHONE.w / 2 - 0.25, PHONE.h / 2 - 0.25, BACK]} rotation={[0, Math.PI, 0]}>
+          <mesh geometry={geo.plateau} material={mats.glossGlass} />
+          {[
+            [-0.085, 0.085],
+            [-0.085, -0.085],
+            [0.09, 0],
+          ].map(([x, y], i) => (
+            <group key={i} position={[x, y, 0.012]} rotation={[Math.PI / 2, 0, 0]}>
+              <mesh material={mats.lensRing}>
+                <cylinderGeometry args={[0.07, 0.074, 0.03, 40]} />
+              </mesh>
+              <mesh position={[0, 0.0155, 0]} material={mats.lens}>
+                <cylinderGeometry args={[0.056, 0.056, 0.002, 40]} />
+              </mesh>
+              <mesh position={[0, 0.0168, 0]}>
+                <cylinderGeometry args={[0.022, 0.022, 0.001, 24]} />
+                <meshPhysicalMaterial color="#0b0b14" roughness={0.02} clearcoat={1} />
+              </mesh>
+            </group>
+          ))}
+          {/* flash e LiDAR */}
+          <mesh position={[0.1, 0.12, 0.013]} rotation={[Math.PI / 2, 0, 0]}>
+            <cylinderGeometry args={[0.024, 0.024, 0.002, 24]} />
+            <meshPhysicalMaterial color="#e9e3cf" roughness={0.3} />
+          </mesh>
+          <mesh position={[0.1, -0.12, 0.013]} rotation={[Math.PI / 2, 0, 0]} material={mats.blackGlass}>
+            <cylinderGeometry args={[0.022, 0.022, 0.002, 24]} />
+          </mesh>
         </group>
       </group>
     )

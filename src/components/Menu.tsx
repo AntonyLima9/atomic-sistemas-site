@@ -52,7 +52,7 @@ export function Menu() {
               <li key={h}>
                 <a
                   href={h}
-                  data-cursor="ir"
+                 
                   onClick={(e) => (e.preventDefault(), go(h))}
                   className="rounded-full px-4 py-2 text-sm text-white/70 transition-colors hover:text-sun"
                 >
@@ -63,7 +63,7 @@ export function Menu() {
           </ul>
           <div className="flex items-center gap-2">
             <Magnetic className="hidden sm:inline-block">
-              <a href={linkWhatsApp()} target="_blank" rel="noopener" className="btn btn-gold !py-2.5 !text-sm" data-cursor="falar">
+              <a href={linkWhatsApp()} target="_blank" rel="noopener" className="btn btn-gold !py-2.5 !text-sm">
                 Orçamento grátis
               </a>
             </Magnetic>
