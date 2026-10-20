@@ -36,6 +36,11 @@ function Devices({ mobile }: { mobile: boolean }) {
     const s5 = seg(p, 0.62, 0.85)
     const s6 = easeInOut(seg(p, 0.85, 1))
     const idle = 1 - s1
+    // "sai da tela": avança em direção à câmera girando, abre a tampa de perto e só depois recua
+    const out = easeOut(seg(p, 0, 0.14)) * (1 - easeInOut(seg(p, 0.3, 0.44)))
+    const OUT = mobile ? 2.6 : 3.3
+    // saída: voa por cima do ombro do visitante, atravessando o plano da câmera
+    const exit = Math.pow(seg(p, 0.86, 1), 1.6)
 
     // inclinação pelo mouse (suavizada)
     tilt.current.x += (scrollState.mouse.y * 0.09 - tilt.current.x) * 0.05
@@ -44,25 +49,25 @@ function Devices({ mobile }: { mobile: boolean }) {
     const r = rig.current!
     r.visible = s6 < 0.999
     r.rotation.set(-tilt.current.x, tilt.current.y + Math.sin(s5 * Math.PI) * 0.32 + (s5 > 0 ? (s5 - 0.5) * 0.12 : 0), 0)
-    r.position.set(0, lerp(0, 1.6, s6), lerp(0, -4.5, s6))
+    r.position.set(0, 0, 0)
 
     // MacBook
     const m = mac.current!
     const heroY = mobile ? -2.3 : -1.25
     const openY = mobile ? lerp(-0.5, 0.75, s4) : -0.55
     m.position.set(
-      mobile ? 0 : lerp(2.5, 0, s1) + lerp(0, -1.5, s4),
-      lerp(heroY, openY, s1) + Math.sin(t * 1.3) * 0.06 * idle,
-      0,
+      (mobile ? 0 : lerp(2.5, 0, s1) + lerp(0, -1.5, s4)) + lerp(0, mobile ? -1.2 : -3.2, exit),
+      lerp(heroY, openY, s1) + Math.sin(t * 1.3) * 0.06 * idle + out * (mobile ? 0.1 : 0.35) + lerp(0, mobile ? 1.6 : 0.6, exit),
+      out * OUT + lerp(0, 11, exit),
     )
     m.rotation.set(
-      lerp(0.55, 0.16, s1) + lerp(0, -0.06, s3b) + Math.sin(t * 0.9) * 0.04 * idle,
-      lerp(0.6, TAU, s1) + lerp(0, -0.55, s3a) + lerp(0, 0.95, s3b) - lerp(0, 0.35, s4),
-      lerp(-0.35, 0, s1) + Math.sin(t * 0.7) * 0.03 * idle,
+      lerp(0.55, 0.16, s1) + lerp(0, -0.06, s3b) + Math.sin(t * 0.9) * 0.04 * idle + out * 0.12 - exit * 0.9,
+      lerp(0.6, TAU, s1) + lerp(0, -0.55, s3a) + lerp(0, 0.95, s3b) - lerp(0, 0.35, s4) - exit * 1.4,
+      lerp(-0.35, 0, s1) + Math.sin(t * 0.7) * 0.03 * idle + Math.sin(s1 * Math.PI) * 0.25 + exit * 0.5,
     )
-    const ms = (mobile ? 0.72 : lerp(0.82, 1, s1) * lerp(1, 0.86, s4)) * lerp(1, 0.75, s6)
+    const ms = mobile ? 0.72 : lerp(0.82, 1, s1) * lerp(1, 0.86, s4)
     m.scale.setScalar(ms)
-    lid.current!.rotation.x = lerp(0, LID_OPEN, s2) + lerp(0, 0.75, s6)
+    lid.current!.rotation.x = lerp(0, LID_OPEN, s2) + lerp(0, 0.5, s6)
 
     // tela acende com flash dourado
     if (macScreen.current) {
@@ -76,12 +81,12 @@ function Devices({ mobile }: { mobile: boolean }) {
     const ph = phone.current!
     ph.visible = s4 > 0.001
     if (mobile) {
-      ph.position.set(lerp(3.5, 0, s4), lerp(-3.5, -0.85, s4), 0.6)
+      ph.position.set(lerp(3.5, 0, s4) + exit * 1.2, lerp(-3.5, -0.85, s4) - exit * 1.4, 0.6 + exit * 11)
     } else {
-      ph.position.set(lerp(6, 2.05, s4), lerp(1.5, -0.05, s4) + Math.sin(t * 1.1) * 0.03, 0.5)
+      ph.position.set(lerp(6, 2.05, s4) + exit * 3, lerp(1.5, -0.05, s4) + Math.sin(t * 1.1) * 0.03 - exit * 0.8, 0.5 + exit * 11)
     }
-    ph.rotation.set(lerp(0.4, 0.04, s4), lerp(Math.PI + 1.2, -0.32, s4) + lerp(0, 0.5, s5) - lerp(0, 0.2, s6), lerp(0.9, 0, s4))
-    ph.scale.setScalar((mobile ? 0.82 : 1.3) * lerp(1, 0.75, s6))
+    ph.rotation.set(lerp(0.4, 0.04, s4) - exit * 0.6, lerp(Math.PI + 1.2, -0.32, s4) + lerp(0, 0.5, s5) + exit * 1.6, lerp(0.9, 0, s4) - exit * 0.7)
+    ph.scale.setScalar(mobile ? 0.82 : 1.3)
     if (phoneScreen.current) {
       const on = easeOut(seg(p, 0.52, 0.62))
       phoneScreen.current.color.setScalar(0.92 * on)
@@ -107,12 +112,18 @@ function CameraRig({ mobile }: { mobile: boolean }) {
     const s2 = easeInOut(seg(p, 0.12, 0.3))
     const s6 = easeInOut(seg(p, 0.85, 1))
     const c = easeInOut(scrollState.cta)
-    const z = lerp(lerp(baseZ, baseZ * 0.86, s2) + lerp(0, 2, s6), baseZ, c)
-    const y = lerp(lerp(1.2, 0.9, s2) + lerp(0, 2.2, s6), 1, c)
+    const z = lerp(lerp(baseZ, baseZ * 0.9, s2) + lerp(0, 0.6, s6), baseZ, c)
+    const y = lerp(lerp(1.2, 0.95, s2) + lerp(0, 0.5, s6), 1, c)
+    const cam = camera as THREE.PerspectiveCamera
+    const punch = Math.sin(Math.PI * seg(p, 0, 0.16)) * 7 + Math.sin(Math.PI * seg(p, 0.86, 1)) * 9
+    if (Math.abs(cam.fov - (35 + punch)) > 0.01) {
+      cam.fov += (35 + punch - cam.fov) * 0.12
+      cam.updateProjectionMatrix()
+    }
     camera.position.x += (scrollState.mouse.x * 0.25 - camera.position.x) * 0.04
     camera.position.y += (y + scrollState.mouse.y * 0.15 - camera.position.y) * 0.08
     camera.position.z += (z - camera.position.z) * 0.08
-    look.current.set(0, lerp(lerp(0, 0.1, s2) + lerp(0, 1.4, s6), mobile ? 1 : 0.6, c), 0)
+    look.current.set(0, lerp(lerp(0, 0.15, s2) + lerp(0, 0.3, s6), mobile ? 1 : 0.6, c), 0)
     camera.lookAt(look.current)
   })
   return null

@@ -66,7 +66,7 @@ export function Showcase({ enabled3d }: { enabled3d: boolean }) {
           <div
             key={o.title}
             data-range={o.range.join(',')}
-            className={`pointer-events-none absolute max-w-sm px-5 md:px-10 ${i === 0 ? 'left-0 right-0 top-24 mx-auto text-center md:top-28' : i === 1 ? 'left-0 top-24 md:top-1/2 md:-translate-y-1/2' : 'left-0 top-24 md:top-auto md:bottom-10'}`}
+            className={`pointer-events-none absolute max-w-sm px-5 [text-shadow:0_4px_30px_rgba(0,0,0,.85)] md:px-10 ${i === 0 ? 'left-0 right-0 top-24 mx-auto text-center md:top-28' : i === 1 ? 'left-0 top-24 md:top-1/2 md:-translate-y-1/2' : 'left-0 top-24 md:top-auto md:bottom-10'}`}
             style={{ opacity: 0 }}
           >
             <span className="label">{o.label}</span>
