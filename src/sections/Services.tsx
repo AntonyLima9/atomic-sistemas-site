@@ -52,7 +52,7 @@ export function Services() {
     <section id="servicos" className="relative px-5 py-32 md:px-10">
       <div className="mx-auto max-w-6xl">
         <Scramble text="// 03 — SERVIÇOS" />
-        <SplitText as="h2" text="O que eu *construo* para você." className="h-display mt-5 max-w-3xl text-5xl md:text-7xl" />
+        <SplitText as="h2" text="O que a gente *constrói* para você." className="h-display mt-5 max-w-3xl text-5xl md:text-7xl" />
         <div className="mt-16 grid gap-5 md:grid-cols-3">
           {services.map((s, i) => (
             <TiltCard key={s.title} s={s} i={i} />

@@ -37,7 +37,7 @@ export function Contact() {
         <div className="min-h-[60svh] text-center">
           <Scramble text="// 07 — CONTATO" />
           <SplitText as="h2" text="Bora tirar sua ideia *do papel?*" className="h-display mx-auto mt-6 max-w-5xl text-[clamp(3rem,9vw,8.5rem)] [text-shadow:0_10px_60px_rgba(0,0,0,.7)]" />
-          <p data-reveal className="mx-auto mt-6 max-w-lg text-lg text-white/70">Me chama no WhatsApp ou no Instagram. Respondo rápido e o orçamento é grátis.</p>
+          <p data-reveal className="mx-auto mt-6 max-w-lg text-lg text-white/70">Chama a gente no WhatsApp ou no Instagram. Respondemos rápido e o orçamento é grátis.</p>
         </div>
 
         <div className="mt-10 grid gap-5 md:grid-cols-2">
@@ -74,7 +74,7 @@ export function Contact() {
         <form onSubmit={enviar} data-reveal className="glass glass-dark mt-5 grid gap-4 rounded-[28px] p-7 md:grid-cols-[1fr_1fr_2fr_auto] md:items-end md:p-9">
           <label className="block">
             <span className="mb-2 block font-mono text-xs text-white/50">Seu nome</span>
-            <input className={field} value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Como posso te chamar?" autoComplete="name" />
+            <input className={field} value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Como podemos te chamar?" autoComplete="name" />
           </label>
           <label className="block">
             <span className="mb-2 block font-mono text-xs text-white/50">Tipo de projeto</span>

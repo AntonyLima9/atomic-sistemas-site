@@ -14,7 +14,7 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-10 text-sm">
             <ul className="space-y-2.5 text-white/60">
               {[
-                ['Como trabalho', '#processo'],
+                ['Como trabalhamos', '#processo'],
                 ['Serviços', '#servicos'],
                 ['Projetos', '#projetos'],
                 ['Preços', '#precos'],

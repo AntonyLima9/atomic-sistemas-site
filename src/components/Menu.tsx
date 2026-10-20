@@ -5,7 +5,7 @@ import { linkWhatsApp } from '../data/contato'
 import { scrollTo } from '../lib/scroll'
 
 const links = [
-  ['Como trabalho', '#processo'],
+  ['Como trabalhamos', '#processo'],
   ['Serviços', '#servicos'],
   ['Projetos', '#projetos'],
   ['Preços', '#precos'],

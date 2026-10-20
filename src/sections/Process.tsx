@@ -5,10 +5,10 @@ import { ScrollTrigger } from '../lib/scroll'
 import { IconCode, IconLayout, IconMessage, IconRocket, IconTile } from '../components/Icons'
 
 const steps = [
-  { n: '01', when: 'Dia 1', title: 'Conversa', text: 'Você me chama no WhatsApp e conta a ideia. Sem formulário chato, sem reunião de 2 horas.', icon: IconMessage },
-  { n: '02', when: 'Até 2 dias', title: 'Layout', text: 'Você vê o visual do site antes de eu programar. São 2 rodadas de ajustes inclusas.', icon: IconLayout },
+  { n: '01', when: 'Dia 1', title: 'Conversa', text: 'Você chama a gente no WhatsApp e conta a ideia. Sem formulário chato, sem reunião de 2 horas.', icon: IconMessage },
+  { n: '02', when: 'Até 2 dias', title: 'Layout', text: 'Você vê o visual do site antes de começarmos a programar. São 2 rodadas de ajustes inclusas.', icon: IconLayout },
   { n: '03', when: '1 a 3 semanas', title: 'Desenvolvimento', text: 'Landing page em até 7 dias; sites e painéis em 2 a 4 semanas. Responsivo e preparado para o Google.', icon: IconCode },
-  { n: '04', when: 'Entrega', title: 'No ar + suporte', text: 'Publico com SSL, ajudo a conectar seu domínio e, no plano com painel, te ensino a usar.', icon: IconRocket },
+  { n: '04', when: 'Entrega', title: 'No ar + suporte', text: 'Publicamos com SSL, ajudamos a conectar seu domínio e, no plano com painel, ensinamos você a usar.', icon: IconRocket },
 ]
 
 export function Process() {
@@ -32,7 +32,7 @@ export function Process() {
   return (
     <section id="processo" className="relative px-5 py-32 md:px-10">
       <div className="mx-auto max-w-6xl">
-        <Scramble text="// 02 — COMO EU TRABALHO" />
+        <Scramble text="// 02 — COMO TRABALHAMOS" />
         <SplitText as="h2" text="Do *oi* ao site no ar em poucas semanas." className="h-display mt-5 max-w-3xl text-5xl md:text-7xl" />
 
         <div ref={wrap} className="relative mt-20">
@@ -62,7 +62,7 @@ export function Process() {
           </ol>
         </div>
         <p data-reveal className="mx-auto mt-24 max-w-2xl text-center font-display text-2xl text-white/80 md:text-3xl">
-          “Sem agência, sem intermediário: <span className="text-sun">você fala direto com quem faz.</span>”
+          “Uma equipe enxuta e sem intermediários: <span className="text-sun">você fala direto com quem faz.</span>”
         </p>
       </div>
     </section>

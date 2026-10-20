@@ -295,17 +295,17 @@ body {
 }
 
 /* ---------- Loader ---------- */
-.loader-piece {
-  animation: assemble 1s var(--ease) both;
+.loader-mark {
+  animation: loader-in 0.6s ease-out both;
 }
-@keyframes assemble {
+@keyframes loader-in {
   from {
-    transform: translate(var(--fx), var(--fy)) rotate(var(--fr));
     opacity: 0;
+    transform: scale(0.96);
   }
   to {
-    transform: none;
     opacity: 1;
+    transform: none;
   }
 }
 

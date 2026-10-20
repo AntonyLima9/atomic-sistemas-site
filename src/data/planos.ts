@@ -68,5 +68,5 @@ export const planos: Plano[] = [
 export const custosNoAr = [
   { item: 'Hospedagem (Firebase)', valor: 'R$ 0', obs: 'O plano gratuito atende a maioria dos sites.' },
   { item: 'Domínio .com.br', valor: '~R$ 40/ano', obs: 'Pago direto no Registro.br, no nome do cliente.' },
-  { item: 'Painéis e apps com banco de dados', valor: 'sob uso', obs: 'Pode ter um custo mensal pequeno. Explico antes de começar.' },
+  { item: 'Painéis e apps com banco de dados', valor: 'sob uso', obs: 'Pode ter um custo mensal pequeno. Explicamos antes de começar.' },
 ]

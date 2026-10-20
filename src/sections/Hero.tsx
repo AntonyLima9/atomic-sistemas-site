@@ -34,7 +34,7 @@ export function Hero() {
           {[
             [IconBolt, 'Landing page em até 7 dias'],
             [IconDevices, 'Funciona em qualquer tela'],
-            [IconMessage, 'Suporte direto comigo'],
+            [IconMessage, 'Suporte direto com a equipe'],
           ].map(([Icon, t]) => {
             const I = Icon as typeof IconBolt
             return (
