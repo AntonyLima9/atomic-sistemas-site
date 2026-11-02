@@ -55,7 +55,7 @@ function Devices({ mobile }: { mobile: boolean }) {
     // MacBook
     const m = mac.current!
     const heroY = mobile ? -2.3 : -1.25
-    const openY = mobile ? lerp(-0.5, 0.75, s4) : -0.55
+    const openY = mobile ? lerp(-0.6, 0.45, s4) : -0.55
     m.position.set(
       (mobile ? 0 : lerp(2.5, 0, s1) + lerp(0, -1.5, s4)) + lerp(0, mobile ? -1.2 : -3.2, exit),
       lerp(heroY, openY, s1) + Math.sin(t * 1.3) * 0.06 * idle + out * (mobile ? 0.1 : 0.35) + lerp(0, mobile ? 1.6 : 0.6, exit),
@@ -82,7 +82,7 @@ function Devices({ mobile }: { mobile: boolean }) {
     const ph = phone.current!
     ph.visible = s4 > 0.001
     if (mobile) {
-      ph.position.set(lerp(3.5, 0, s4) + exit * 1.2, lerp(-3.5, -0.85, s4) - exit * 1.4, 0.6 + exit * 11)
+      ph.position.set(lerp(3.5, 0, s4) + exit * 1.2, lerp(-3.5, -1.05, s4) - exit * 1.4, 0.6 + exit * 11)
     } else {
       ph.position.set(lerp(6, 2.05, s4) + exit * 3, lerp(1.5, -0.05, s4) + Math.sin(t * 1.1) * 0.03 - exit * 0.8, 0.5 + exit * 11)
     }
@@ -138,7 +138,7 @@ function Lights({ low }: { low: boolean }) {
       {/* contorno: branco frio de um lado, dourado da marca do outro (atrás, só pega a silhueta) */}
       <spotLight position={[-4.5, -0.2, -5]} angle={0.45} penumbra={1} intensity={10} color="#E2B82C" distance={12} />
       <spotLight position={[5, 0.4, -5]} angle={0.45} penumbra={1} intensity={8} color="#dfe6ff" distance={12} />
-      <Environment resolution={low ? 128 : 512} frames={1}>
+      <Environment resolution={low ? 256 : 512} frames={1}>
         {/* estúdio de fotografia de produto: softbox grande em cima + réguas de luz que desenham
             os filetes de brilho nas bordas do alumínio e do titânio */}
         <color attach="background" args={['#0b0b0c']} />
@@ -184,23 +184,28 @@ export default function Scene() {
   const mobile = window.innerWidth < 768
   const low = lowPower
   const [fx, setFx] = useState(!low)
-  const [dpr, setDpr] = useState(low ? 1.25 : 2)
+  // nitidez: usa a densidade real da tela (até 2x). Em celular fraco cai no máximo para 1.5x, nunca para 1x.
+  const maxDpr = Math.min(window.devicePixelRatio || 1, 2)
+  const minDpr = Math.min(maxDpr, low ? 1.5 : 1.25)
+  const [dpr, setDpr] = useState(maxDpr)
 
   return (
     <Canvas
       className="!fixed inset-0"
       style={{ position: 'fixed', inset: 0, zIndex: 0 }}
-      dpr={[1, dpr]}
+      dpr={dpr}
       frameloop="demand"
       camera={{ fov: 35, position: [0, 1.2, 9], near: 0.1, far: 80 }}
-      gl={{ antialias: !low, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping }}
+      // em telas 2x a própria resolução suaviza as bordas; o MSAA (caro no celular) fica para telas 1x
+      gl={{ antialias: !low || maxDpr < 2, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping }}
       aria-hidden
     >
       <PerformanceMonitor
         onDecline={() => {
           setFx(false)
-          setDpr(1)
+          setDpr(minDpr)
         }}
+        onIncline={() => setDpr(maxDpr)}
       />
       <FrameDriver low={low} />
       <color attach="background" args={['#070707']} />

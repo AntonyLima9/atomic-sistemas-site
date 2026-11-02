@@ -67,12 +67,12 @@ export function Showcase({ enabled3d }: { enabled3d: boolean }) {
           <div
             key={o.title}
             data-range={o.range.join(',')}
-            className={`pointer-events-none absolute max-w-sm px-5 [text-shadow:0_4px_30px_rgba(0,0,0,.85)] md:px-10 ${i === 0 ? 'left-0 right-0 top-24 mx-auto text-center md:top-28' : i === 1 ? 'left-0 top-24 md:top-1/2 md:-translate-y-1/2' : 'left-0 top-24 md:top-auto md:bottom-10'}`}
+            className={`pointer-events-none absolute max-w-sm px-5 [text-shadow:0_4px_30px_rgba(0,0,0,.85)] md:px-10 ${i === 0 ? 'left-0 right-0 top-[4.5rem] mx-auto text-center md:top-28' : i === 1 ? 'left-0 top-[4.5rem] md:top-1/2 md:-translate-y-1/2' : 'left-0 top-[4.5rem] md:top-auto md:bottom-10'}`}
             style={{ opacity: 0 }}
           >
             <span className="label">{o.label}</span>
-            <h2 className="h-display mt-3 text-4xl md:text-5xl">{o.title}</h2>
-            <p className="mt-3 text-white/65">{o.text}</p>
+            <h2 className="h-display mt-2 text-[1.7rem] md:mt-3 md:text-5xl">{o.title}</h2>
+            <p className="mt-3 hidden text-white/65 md:block">{o.text}</p>
           </div>
         ))}
         <div className="absolute inset-x-0 bottom-4 mx-auto grid max-w-5xl grid-cols-3 gap-2 px-3 md:bottom-10 md:gap-3 md:px-5">
