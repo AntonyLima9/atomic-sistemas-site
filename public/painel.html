@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Números do site · Atomic</title>
+<link rel="icon" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg: #0a0a0a; --card: #141414; --line: rgba(255,255,255,.08); --txt: #f5f5f0; --mut: rgba(245,245,240,.55); --sun: #ffd23f; --sun2: rgba(255,210,63,.35); }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--txt); font: 15px/1.5 Inter, system-ui, sans-serif; min-height: 100vh; }
+  main { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; }
+  header { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+  h1 { font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+  h1 span { color: var(--sun); }
+  h2 { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mut); margin-bottom: 14px; }
+  button, select { font: inherit; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; cursor: pointer; }
+  button.gold { background: var(--sun); color: #0a0a0a; border: 0; font-weight: 600; padding: 12px 22px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .mut { color: var(--mut); font-size: 13px; }
+  .grid { display: grid; gap: 14px; }
+  .kpis { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 14px; }
+  .two { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 20px; min-width: 0; }
+  .kpi b { display: block; font-size: 34px; font-weight: 700; letter-spacing: -.02em; margin-top: 4px; }
+  .kpi.hl b { color: var(--sun); }
+  .chart { display: flex; align-items: flex-end; gap: 3px; height: 160px; margin-top: 8px; }
+  .day { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; height: 100%; min-width: 0; position: relative; }
+  .day i { display: block; border-radius: 3px 3px 0 0; background: var(--sun2); min-height: 1px; }
+  .day i.wa { background: var(--sun); border-radius: 3px; }
+  .day:hover::after { content: attr(data-tip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); white-space: nowrap; background: #000; border: 1px solid var(--line); padding: 4px 8px; border-radius: 6px; font-size: 12px; z-index: 2; }
+  .legend { display: flex; gap: 16px; font-size: 13px; color: var(--mut); margin-top: 10px; }
+  .legend span::before { content: ''; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; background: var(--sun2); }
+  .legend span.wa::before { background: var(--sun); }
+  .bars { list-style: none; padding: 0; display: grid; gap: 10px; }
+  .bars li { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 14px; }
+  .bars .track { grid-column: 1 / -1; height: 6px; border-radius: 4px; background: rgba(255,255,255,.06); overflow: hidden; }
+  .bars .fill { height: 100%; background: var(--sun); border-radius: 4px; }
+  .center { min-height: 70vh; display: grid; place-items: center; text-align: center; }
+  .center p { margin: 10px 0 22px; }
+  .empty { color: var(--mut); font-size: 14px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Atomic <span>·</span> Números do site</h1>
+    <div class="row" id="bar" hidden>
+      <select id="periodo" aria-label="Período">
+        <option value="7">Últimos 7 dias</option>
+        <option value="30" selected>Últimos 30 dias</option>
+        <option value="90">Últimos 90 dias</option>
+      </select>
+      <span class="mut" id="quem"></span>
+      <button id="sair">Sair</button>
+    </div>
+  </header>
+
+  <section class="center" id="entrar" hidden>
+    <div>
+      <h2>Área da equipe</h2>
+      <p class="mut" id="aviso">Entre com a conta Google da Atomic para ver as visitas e os cliques.</p>
+      <button class="gold" id="google">Entrar com Google</button>
+    </div>
+  </section>
+
+  <section id="dados" hidden>
+    <div class="grid kpis">
+      <div class="card kpi"><span class="mut">Visitas</span><b id="k-vis">0</b></div>
+      <div class="card kpi hl"><span class="mut">Cliques no WhatsApp</span><b id="k-wa">0</b></div>
+      <div class="card kpi"><span class="mut">Taxa de contato</span><b id="k-taxa">0%</b></div>
+      <div class="card kpi"><span class="mut">Cliques no Instagram</span><b id="k-ig">0</b></div>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <h2>Por dia</h2>
+      <div class="chart" id="chart"></div>
+      <div class="legend"><span>Visitas</span><span class="wa">WhatsApp</span></div>
+    </div>
+    <div class="grid two">
+      <div class="card"><h2>De onde vieram</h2><ul class="bars" id="origens"></ul></div>
+      <div class="card"><h2>Botões que geraram contato</h2><ul class="bars" id="botoes"></ul></div>
+    </div>
+    <p class="mut" style="margin-top:18px">Contagem anônima, sem cookies: uma visita por sessão do navegador. Acessos do próprio computador de desenvolvimento não contam.</p>
+  </section>
+</main>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js'
+  import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js'
+  import { getFirestore, collection, query, where, getDocs, documentId } from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js'
+
+  const app = initializeApp({ apiKey: 'AIzaSyCYvAmWN0GdzcXJVbFhi7bUyUq4HND6Wrc', authDomain: 'atomic-sistemas.firebaseapp.com', projectId: 'atomic-sistemas' })
+  const auth = getAuth(app)
+  const db = getFirestore(app)
+  const $ = (id) => document.getElementById(id)
+
+  const ORIGENS = { instagram: 'Instagram', google: 'Google', whatsapp: 'WhatsApp', facebook: 'Facebook', direto: 'Direto / link digitado', outros: 'Outros sites' }
+  const BOTOES = {
+    wa_topo: 'Topo do site', wa_menu: 'Menu', wa_flutuante: 'Botão flutuante', wa_projetos: 'Projetos',
+    wa_start: 'Plano Start', wa_pro: 'Plano Pro', wa_premium: 'Plano Premium', wa_manutencao: 'Manutenção mensal',
+    wa_sistema: 'Sistema sob medida', wa_contato: 'Contato (cartão)', wa_formulario: 'Formulário de contato', wa_rodape: 'Rodapé',
+  }
+  const dia = (d) => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(d)
+  const fmt = (n) => n.toLocaleString('pt-BR')
+
+  function bars(el, entries) {
+    const max = Math.max(1, ...entries.map((e) => e[1]))
+    el.innerHTML = entries.length
+      ? entries.map(([nome, n]) => `<li><span>${nome}</span><b>${fmt(n)}</b><span class="track"><span class="fill" style="width:${(n / max) * 100}%"></span></span></li>`).join('')
+      : '<li class="empty">Nada registrado no período.</li>'
+  }
+
+  async function carregar() {
+    const dias = +$('periodo').value
+    const lista = Array.from({ length: dias }, (_, i) => dia(new Date(Date.now() - (dias - 1 - i) * 864e5)))
+    const snap = await getDocs(query(collection(db, 'site_stats'), where(documentId(), '>=', lista[0]), where(documentId(), '<=', lista.at(-1) + '_~')))
+    const porDia = Object.fromEntries(lista.map((d) => [d, {}]))
+    const tot = {}
+    snap.forEach((doc) => {
+      const [d, ...k] = doc.id.split('_')
+      const nome = k.join('_')
+      const n = doc.data().n ?? 0
+      if (porDia[d]) porDia[d][nome] = n
+      tot[nome] = (tot[nome] ?? 0) + n
+    })
+    const somaWa = (o) => Object.entries(o).filter(([k]) => k.startsWith('wa_')).reduce((s, [, n]) => s + n, 0)
+    const vis = tot.visitas ?? 0
+    const wa = somaWa(tot)
+    $('k-vis').textContent = fmt(vis)
+    $('k-wa').textContent = fmt(wa)
+    $('k-taxa').textContent = vis ? `${((wa / vis) * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%` : '—'
+    $('k-ig').textContent = fmt((tot.insta_contato ?? 0) + (tot.insta_rodape ?? 0))
+
+    const max = Math.max(1, ...lista.map((d) => porDia[d].visitas ?? 0), ...lista.map((d) => somaWa(porDia[d])))
+    $('chart').innerHTML = lista.map((d) => {
+      const v = porDia[d].visitas ?? 0
+      const w = somaWa(porDia[d])
+      const [, m, dd] = d.split('-')
+      return `<div class="day" data-tip="${dd}/${m}: ${v} visitas, ${w} WhatsApp"><i style="height:${(v / max) * 100}%"></i><i class="wa" style="height:${(w / max) * 100}%"></i></div>`
+    }).join('')
+
+    bars($('origens'), Object.entries(ORIGENS).map(([k, nome]) => [nome, tot[`origem_${k}`] ?? 0]).filter((e) => e[1]).sort((a, b) => b[1] - a[1]))
+    bars($('botoes'), Object.entries(BOTOES).map(([k, nome]) => [nome, tot[k] ?? 0]).filter((e) => e[1]).sort((a, b) => b[1] - a[1]))
+  }
+
+  $('google').onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch((e) => ($('aviso').textContent = `Não foi possível entrar (${e.code}).`))
+  $('sair').onclick = () => signOut(auth)
+  $('periodo').onchange = carregar
+
+  onAuthStateChanged(auth, async (user) => {
+    $('entrar').hidden = !!user
+    $('bar').hidden = !user
+    $('dados').hidden = true
+    if (!user) return
+    $('quem').textContent = user.email
+    try {
+      await carregar()
+      $('dados').hidden = false
+    } catch {
+      await signOut(auth)
+      $('aviso').textContent = `A conta ${user.email} não tem acesso. Entre com a conta da equipe Atomic.`
+    }
+  })
+</script>
+</body>
+</html>

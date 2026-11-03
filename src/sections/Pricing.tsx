@@ -74,6 +74,7 @@ export function Pricing() {
               </ul>
               <Magnetic className="mt-10">
                 <a
+                  data-track={p.id}
                   href={linkWhatsApp(`Olá! Tenho interesse no plano ${p.nome} (${p.subtitulo}) de R$ ${fmt(p.preco)}.`)}
                   target="_blank"
                   rel="noopener"
@@ -117,6 +118,7 @@ export function Pricing() {
           </ul>
           <Magnetic>
             <a
+              data-track="manutencao"
               href={linkWhatsApp(`Olá! Tenho interesse na ${manutencao.nome.toLowerCase()} de R$ ${manutencao.preco}/mês.`)}
               target="_blank"
               rel="noopener"
@@ -150,7 +152,7 @@ export function Pricing() {
 
         <div className="mt-10 flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <p className="flex items-center gap-2.5 rounded-full border border-black/10 px-5 py-3 font-mono text-sm"><IconCard className="h-5 w-5 text-[#8a6d0f]" /> Pagamento: 50% para começar, 50% na entrega.</p>
-          <a href={linkWhatsApp('Olá! Quero um orçamento para um aplicativo/sistema maior.')} target="_blank" rel="noopener" className="group flex items-center gap-3 text-lg font-semibold">
+          <a data-track="sistema" href={linkWhatsApp('Olá! Quero um orçamento para um aplicativo/sistema maior.')} target="_blank" rel="noopener" className="group flex items-center gap-3 text-lg font-semibold">
             Aplicativo ou sistema maior? <span className="underline decoration-gold decoration-2 underline-offset-4">Orçamento sob medida</span>
             <IconArrow className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </a>

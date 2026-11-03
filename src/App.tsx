@@ -8,6 +8,7 @@ import { Showcase } from './sections/Showcase'
 import { Process } from './sections/Process'
 import { Services } from './sections/Services'
 import { Projects } from './sections/Projects'
+import { Testimonials } from './sections/Testimonials'
 import { Pricing } from './sections/Pricing'
 import { Faq } from './sections/Faq'
 import { Contact } from './sections/Contact'
@@ -62,6 +63,7 @@ export default function App() {
         <Services />
         <Marquee items={['RÁPIDO', 'BONITO', 'BARATO', 'NO AR EM DIAS']} />
         <Projects />
+        <Testimonials />
         <Pricing />
         <Faq />
         <Contact />

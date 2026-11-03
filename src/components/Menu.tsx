@@ -102,7 +102,7 @@ export function Menu() {
             </li>
           ))}
         </ul>
-        <a href={linkWhatsApp()} tabIndex={open ? 0 : -1} target="_blank" rel="noopener" className="btn btn-gold mt-12 self-start">
+        <a data-track="menu" href={linkWhatsApp()} tabIndex={open ? 0 : -1} target="_blank" rel="noopener" className="btn btn-gold mt-12 self-start">
           Orçamento grátis no WhatsApp
         </a>
       </div>

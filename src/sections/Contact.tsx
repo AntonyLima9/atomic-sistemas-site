@@ -6,6 +6,7 @@ import { IconArrow, IconChat, IconInsta } from '../components/Icons'
 import { contato, linkInstagram, linkWhatsApp } from '../data/contato'
 import { ScrollTrigger } from '../lib/scroll'
 import { scrollState } from '../lib/store'
+import { track } from '../lib/track'
 
 export function Contact() {
   const sec = useRef<HTMLElement>(null)
@@ -26,6 +27,7 @@ export function Contact() {
   const enviar = (e: React.FormEvent) => {
     e.preventDefault()
     const texto = `Olá! Sou ${nome || '(sem nome)'} e vim pelo site da Atomic.\nTipo de projeto: ${tipo}\n${msg ? `Mensagem: ${msg}` : ''}`.trim()
+    track('wa_formulario')
     window.open(linkWhatsApp(texto), '_blank', 'noopener')
   }
 

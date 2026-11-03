@@ -37,6 +37,7 @@ export function WhatsAppFloat() {
   }, [])
   return (
     <a
+      data-track="flutuante"
       href={linkWhatsApp()}
       target="_blank"
       rel="noopener"
