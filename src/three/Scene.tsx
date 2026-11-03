@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ContactShadows, Environment, Lightformer, PerformanceMonitor } from '@react-three/drei'
+import { ContactShadows, Environment, Lightformer, PerformanceMonitor, Preload } from '@react-three/drei'
 import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { Macbook } from './Macbook'
@@ -10,6 +10,7 @@ import { LogoAssembly } from './LogoAssembly'
 import { setScroll, useScreenTextures } from './textures'
 import { easeInOut, easeOut, lerp, scrollState, seg } from '../lib/store'
 import { lowPower } from '../lib/env'
+import { ScrollTrigger } from '../lib/scroll'
 
 const TAU = Math.PI * 2
 const LID_OPEN = -1.83 // ~105°
@@ -160,12 +161,17 @@ function FrameDriver({ low }: { low: boolean }) {
   useEffect(() => {
     let raf = 0
     let n = 0
-    const solid = Array.from(document.querySelectorAll<HTMLElement>('#precos, footer'))
-    const covered = () =>
-      solid.some((el) => {
+    // posições das seções sólidas medidas só quando o layout muda; a cada quadro basta comparar com o scroll
+    let spans: [number, number][] = []
+    const measure = () => {
+      spans = Array.from(document.querySelectorAll<HTMLElement>('#precos, footer'), (el) => {
         const r = el.getBoundingClientRect()
-        return r.top <= 0 && r.bottom >= innerHeight
+        return [r.top + scrollY, r.bottom + scrollY - innerHeight]
       })
+    }
+    measure()
+    ScrollTrigger.addEventListener('refresh', measure)
+    const covered = () => spans.some(([a, b]) => scrollY >= a && scrollY <= b)
     const loop = () => {
       raf = requestAnimationFrame(loop)
       if (document.hidden || covered()) return
@@ -175,7 +181,10 @@ function FrameDriver({ low }: { low: boolean }) {
       if (!low || main || n % 2 === 0) invalidate()
     }
     raf = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(raf)
+    return () => {
+      cancelAnimationFrame(raf)
+      ScrollTrigger.removeEventListener('refresh', measure)
+    }
   }, [invalidate, low])
   return null
 }
@@ -188,6 +197,13 @@ export default function Scene() {
   const maxDpr = Math.min(window.devicePixelRatio || 1, 2)
   const minDpr = Math.min(maxDpr, low ? 1.5 : 1.25)
   const [dpr, setDpr] = useState(maxDpr)
+  // o monitor de desempenho só começa depois do aquecimento: medir durante o carregamento
+  // (compilação de shaders, texturas) derrubava a nitidez à toa
+  const [monitor, setMonitor] = useState(false)
+  useEffect(() => {
+    const id = setTimeout(() => setMonitor(true), 4000)
+    return () => clearTimeout(id)
+  }, [])
 
   return (
     <Canvas
@@ -200,13 +216,17 @@ export default function Scene() {
       gl={{ antialias: !low || maxDpr < 2, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping }}
       aria-hidden
     >
-      <PerformanceMonitor
-        onDecline={() => {
-          setFx(false)
-          setDpr(minDpr)
-        }}
-        onIncline={() => setDpr(maxDpr)}
-      />
+      {monitor && (
+        <PerformanceMonitor
+          onDecline={() => {
+            setFx(false)
+            setDpr(minDpr)
+          }}
+          onIncline={() => setDpr(maxDpr)}
+        />
+      )}
+      {/* compila todos os materiais (inclusive o iPhone, ainda invisível) antes de aparecerem */}
+      <Preload all />
       <FrameDriver low={low} />
       <color attach="background" args={['#070707']} />
       <fog attach="fog" args={['#070707', 12, 34]} />

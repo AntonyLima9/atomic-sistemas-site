@@ -17,11 +17,6 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@property --angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
 
 html {
   background: var(--black);
@@ -204,28 +199,45 @@ body {
   }
 }
 
-/* ---------- Borda girando (plano destaque) ---------- */
+/* ---------- Borda girando (plano destaque) ----------
+   Um quadrado com gradiente cônico gira (só transform: roda na GPU, sem redesenhar a página)
+   dentro de um anel recortado 2px maior que o cartão; o fundo do cartão cobre o miolo. */
 .border-spin {
   position: relative;
+  isolation: isolate;
 }
-.border-spin::after {
+/* miolo: cobre o gradiente (filhos com z-index negativo pintam por cima do fundo do próprio cartão) */
+.border-spin::before {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: 0;
+  z-index: -1;
   border-radius: inherit;
-  padding: 2px;
-  background: conic-gradient(from var(--angle), transparent 0 55%, var(--gold) 70%, #fff3b0 78%, var(--yellow) 86%, transparent 100%);
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: spin-angle 4s linear infinite;
+  background: #070707;
+}
+.spin-ring {
+  position: absolute;
+  inset: -2px;
+  z-index: -2;
+  border-radius: 30px;
+  overflow: hidden;
   pointer-events: none;
 }
-@keyframes spin-angle {
+.spin-ring::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 300%;
+  aspect-ratio: 1;
+  background: conic-gradient(transparent 0 55%, var(--gold) 70%, #fff3b0 78%, var(--yellow) 86%, transparent 100%);
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: ring-rot 4s linear infinite;
+  will-change: transform;
+}
+@keyframes ring-rot {
   to {
-    --angle: 360deg;
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 
@@ -318,6 +330,7 @@ body {
     transition-duration: 0.001ms !important;
   }
   .split .c,
+  .split .w,
   [data-reveal] {
     opacity: 1;
     transform: none;
@@ -424,13 +437,24 @@ body {
   .btn-ghost {
     backdrop-filter: none;
   }
+  /* no celular a entrada é por palavra: cada letra animada vira uma camada separada na GPU */
   .split .c {
+    opacity: 1;
     filter: none;
+    transform: none;
+    transition: none;
+  }
+  .split .w {
+    opacity: 0;
     transform: translateY(0.35em);
     transition:
       opacity 0.7s var(--ease),
       transform 0.8s var(--ease);
     transition-delay: calc(var(--i) * 14ms);
+  }
+  .split.is-in .w {
+    opacity: 1;
+    transform: none;
   }
   .marquee {
     transform: none;
@@ -438,5 +462,10 @@ body {
   }
   .icon-tile svg {
     filter: none;
+  }
+  /* brilho correndo no texto redesenha cada letra a cada quadro: no celular o dourado fica fixo */
+  .text-shine {
+    animation: none;
+    background-position: 35% 0;
   }
 }

@@ -49,6 +49,7 @@ export function Pricing() {
               style={{ ['--d' as string]: `${i * 120}ms` }}
               className={`relative flex flex-col rounded-[28px] p-8 ${p.destaque ? 'border-spin bg-ink text-paper shadow-[0_40px_80px_-30px_rgba(0,0,0,.6)] lg:-my-4 lg:py-12' : 'border border-black/10 bg-white/60'}`}
             >
+              {p.destaque && <span className="spin-ring" aria-hidden />}
               {p.destaque && <span className="absolute -top-3 left-8 flex items-center gap-1.5 rounded-full bg-sun px-3 py-1 font-mono text-[11px] font-semibold text-ink"><IconStar className="h-3 w-3" /> RECOMENDADO</span>}
               <p className={`font-mono text-xs uppercase tracking-widest ${p.destaque ? 'text-gold' : 'text-[#8a6d0f]'}`}>{p.subtitulo}</p>
               <h3 className="h-display mt-2 text-4xl">{p.nome}</h3>

@@ -27,7 +27,7 @@ export function SplitText({
           /^\s+$/.test(w) ? (
             ' '
           ) : (
-            <span className="w" key={wi}>
+            <span className="w" key={wi} style={{ ['--i' as string]: i }}>
               {[...w].map((ch, ci) => (
                 <span className={`c ${isAccent ? accent : ''}`} key={ci} style={{ ['--i' as string]: i++ }}>
                   {ch}

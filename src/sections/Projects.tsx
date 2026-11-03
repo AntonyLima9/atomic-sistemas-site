@@ -38,12 +38,14 @@ export function Projects() {
 
   useEffect(() => {
     if (reducedMotion) return
+    // largura medida só no refresh (medir a cada quadro força o navegador a recalcular o layout)
+    let max = 0
     const st = ScrollTrigger.create({
       trigger: sec.current,
       start: 'top top',
       end: 'bottom bottom',
+      onRefresh: () => (max = track.current!.scrollWidth - innerWidth),
       onUpdate: (s) => {
-        const max = track.current!.scrollWidth - innerWidth
         track.current!.style.transform = `translate3d(${-s.progress * max}px,0,0)`
       },
     })
